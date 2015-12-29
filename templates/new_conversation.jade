@@ -1,0 +1,22 @@
+-// This can only load if we have projects
+
+
+form
+  .errors(style= 'display: none')
+  .field
+    label Title:
+    input(id='conv_name', name= 'conv_name', placeholder= "Conversation title...", data-save-id="new-conversation-name")
+  .field
+    label Project:
+    select(name= 'conv_project_id')
+      - each project in Bkg.projects.models
+        - if (!project.get('archived'))
+          option(value= project.id)= project.get('name')
+  .field
+    label Comment:
+    textarea(name= "conv_body", placeholder= "Write a comment...", data-save-id="new-conversation-body")
+  .field
+    label Notify:
+    input(type= "button", name="conv_show_watchers", value=Bkg.NOTIFY_ONE_PERSON_LABEL, title=Bkg.NOTIFY_BUTTON_TOOLTIP)
+  .field.submit
+    input(type= "submit", value= Bkg.CREATE_CONV_LABEL, id="new_conv_submit")

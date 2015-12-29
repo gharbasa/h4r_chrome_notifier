@@ -1,0 +1,41 @@
+
+<!--
+---- Background page. This page is always loaded if Chrome is open.
+----
+---- Here we fetch collections and refresh data.
+---- popup.html opens when clicked and accesses data from here.
+-->
+
+<html>
+  <body>
+    <script src="js/lib/underscore.js"></script>
+    <script src="js/lib/jquery-1.8.3.min.js"></script>
+    <script src="js/lib/backbone.js"></script>
+    <script src="js/util/date_helper.js"></script>
+    <script src="js/util/utils.js"></script>
+    <script src="js/util/csrf.js"></script>
+    <script src="js/util/hashtags.js"></script>
+        
+    <script src="js/models/notificationtype.js"></script>
+    <script src="js/models/usersession.js"></script>
+    <script src="js/models/notification.js"></script>
+    <script src="js/models/user.js"></script>
+    <script src="js/collections/notifications.js"></script>
+    <script src="js/collections/notificationtypes.js"></script>
+    <script src="js/collections/projects.js"></script>
+    <script src="js/collections/people.js"></script>
+    <script src="js/collections/task_lists.js"></script>
+    <script src="js/collections/users.js"></script>
+
+    <!-- Background specific scripts -->
+
+    <script src="js/background/init.js"></script>
+
+    <script src="js/background/active.js"></script>
+    <script src="js/background/online.js"></script>
+    <script src="js/background/omnibox.js"></script>
+
+    <script src="js/background.js"></script>
+    <script src="js/analytics.js"></script>
+  </body>
+</html>

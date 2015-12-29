@@ -1,0 +1,121 @@
+#notify {
+  font-size: 12px;
+  display: block;
+  padding: 4px;
+  padding-right: 0;
+  padding-top: 4px;
+  border-bottom: 1px solid #ccc;
+  color:#999999;
+}
+
+.watcher {
+  font-size: 12px;
+  position: relative;
+  min-height: 25px;
+  margin: 1px;
+  padding: 15px 3px 3px 50px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+#notify a {
+    outline: none;
+    display: inline-block;
+    cursor: pointer;
+	color: #25789C;
+	text-decoration: none;
+}
+  
+#notify  a.notify_select_all {
+   margin-left: 3px;
+}
+
+#notify  a.notify_select_none {
+   margin-left: 0px;
+}
+
+#notify a:hover {
+  color: black ;
+  text-decoration: underline;
+}
+
+#notify .verticalLine {
+  border-left: 1px solid #999999;
+  width: 1px;
+  height: 20px;
+  padding: 1px 2px 1px 2px;
+  margin-left: 3px;
+}
+
+.watcherDoneButton {
+    margin:0px 0px 0px 10px;
+}
+
+.watcher:last-child {
+    border-bottom: none;
+}
+
+.watcher .title {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    display: block;
+}
+
+.watcher .title .more {
+      margin-top: 3px;
+      margin-bottom: 7px;
+      font-size: 11px;
+      color: #999;
+}
+
+.watcher .title .more a:hover {
+      text-decoration: underline;
+}
+
+.watcher span.transition {
+    margin: 0 5px;
+}
+
+.watcher span.label {
+    background: #c9c9c9;
+    border: 1px solid #a0a0a0;
+    color: #535353;
+    padding: 0px 3px;
+    font-size: 10px;
+    border-radius: 3px;
+    display: inline-block;
+    line-height: 14px;
+    text-align: center;
+    min-width: 53px;
+    text-transform: capitalize;
+    font-weight: normal;
+}
+
+.watcher img.avatar {
+    position: absolute;
+    border: 1px solid #a0a0a0;
+    border-radius: 3px;
+    position: absolute;
+    top: 8px;
+    left: 15px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+  
+.watcher input.watcher_checkbox {
+    float: right;
+}
+
+ 
+.notifyheader {
+  font-size: 12px;
+  margin: 10px 110px 10px 10px;
+  color: #999;
+}
+
+.showWatchers {
+  position: relative;
+  border: 1px solid #707070;
+}

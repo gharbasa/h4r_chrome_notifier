@@ -1,0 +1,14 @@
+#header
+  a.icon-home-header.currentactivelink(href="#", title='Notifications')
+    i.icon-bell
+    
+  a.new_task.js-new-task(href="#", title='Create a new task')
+    = "New Task"
+
+  span.verticalLine
+
+  a.new_conversation.js-new-conversation(href="#", title='Create a new conversation')
+    = "New Conversation" 
+  
+  a.user.js-hover-user(href="#", title='Click to show more options') 
+    = Bkg.usersession.fullName()

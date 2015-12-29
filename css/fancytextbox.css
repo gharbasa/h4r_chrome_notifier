@@ -1,0 +1,40 @@
+#new_search {
+  font-size: 12px;
+  display: block;
+  padding: 5px;
+  padding-right: 0;
+  border-bottom: 1px solid #ccc;
+  background-color: #f5f5f5;
+}
+
+#new_search .search-input {
+  width: 200px;
+  height: 18px;
+  font-size: 12px;
+  color: #666;
+  padding-left: 2px;
+  padding-right: 18px;
+  margin-left: 85px;
+ }
+
+#new_search .search-default-icon {
+  position: absolute;
+  text-indent: -9999px;
+  margin: 2px 0px 0px -20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background: url(../icons/Search_16x16.png) no-repeat ;
+  background-position: center;
+}
+
+#new_search .search-reset {
+  position: absolute;
+  margin: 2px 0px 0px -20px;
+  width: 20px;
+  height: 20px;
+  text-indent: -9999px;
+  cursor: pointer;
+  background: url(../icons/Clear_16x16.png) no-repeat ;
+  background-position: center;
+}

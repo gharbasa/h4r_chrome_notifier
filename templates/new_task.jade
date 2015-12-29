@@ -1,0 +1,47 @@
+-// This can only load if we have projects and task lists..
+
+
+form
+  .errors(style= 'display: none')
+  .field
+    label Title:
+    input(id='name', name= 'name', placeholder= "Add a title to the task", data-save-id="new-task-name")
+  .field
+    label Project:
+    select(name= 'project_id')
+      - each project in Bkg.projects.models
+        - if (!project.get('archived'))
+          option(value= project.id)= project.get('name')
+  .field
+    label Task List:
+    select(name= 'task_list_id')
+      - each task_list in Bkg.task_lists.forProject(Bkg.projects.models[0].id)
+        - if (!task_list.get('archived'))
+          option= task_list.get('name')
+      -// TODO: What if project has no task lists? Show a default one
+  .field
+    label Description:
+    textarea(name= "body", placeholder= "What needs to be done?", data-save-id="new-task-body")
+  .field
+    label Assignee:
+    select(name= "status_and_assigned", data-save-id="new-task-status")
+      option Unassigned
+  .field
+    label Due date:
+    select(name= 'due_on', data-save-id="new-task-date")
+      option No due date
+      option(value="today") Today
+      option(value="tomorrow") Tomorrow
+      option(value="2 days") 2 days
+      option(value="3 days") 3 days
+      option(value="4 days") 4 days
+      option(value="5 days") 5 days
+      option(value="6 days") 6 days
+      option(value="next week") Next week
+      option(value="next month") Next month
+  .field
+    label Notify:
+    input(type= "button", name="task_show_watchers", value=Bkg.NOTIFY_ONE_PERSON_LABEL, title=Bkg.NOTIFY_BUTTON_TOOLTIP)
+  .field.submit
+    input(type= "submit", value= Bkg.CREATE_TASK_LABEL, id="new_task_submit")
+
