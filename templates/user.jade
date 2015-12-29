@@ -1,0 +1,4 @@
+span.name
+  = user.fullName()
+  img.avatar(src= user.get('micro_avatar_url'), alt=user.fullName())
+  input.watcher_checkbox(type="checkbox", id="checkbox"+user.get("id"), userid=user.get("id"), checked=isMe(user.get("id")))

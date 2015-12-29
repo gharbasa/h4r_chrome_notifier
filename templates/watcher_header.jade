@@ -1,0 +1,15 @@
+#notify
+  span.notifyheader
+    = "Select people to notify"
+  span
+   = "Select: "
+
+  a.notify_select_all.js_notify_select_all()
+    = "All"
+
+  span.verticalLine
+
+  a.notify_select_none.js_notify_select_none()
+    = "None"
+
+  input.watcherDoneButton(type='button', id='notify_done', name='notify_done', value='Done')

@@ -1,0 +1,16 @@
+.title
+  span.name
+    != notificationType.get('subject')
+
+.content
+  a.icon-cancel.js-dismiss(title="Dismiss")
+
+  - if (user)
+    span.name
+      = user.fullName() + ': '
+    img.avatar(src= user.getAvatar())
+  - else
+    span.name
+      = Bkg.UNKNOWN_USER
+
+  != notificationType.get('content')
