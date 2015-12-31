@@ -2,7 +2,7 @@
 /*global Bkg*/
 (function () {
   
-  //var popupView;
+  var popupView;
   var Login = {
     className: 'login'
   };
@@ -61,6 +61,7 @@
   Login.loginSuccessful = function(r) {
 	console.log("Login is successful." + JSON.stringify(r));
 	Bkg.refresh(true);
+	/*
 	var popup = new Views.Popup();
 	this.$el.hide();
 	setTimeout(
@@ -68,6 +69,16 @@
 					$("#content").append(popup.render().el);
 				}, 2000 //more time is not good for user to wait.
 	);
+	*/
+	var me = this;
+	setTimeout(
+			function() {
+				me.popupView.remove();
+				me.popupView = new Views.Popup();
+				$("#content").append(me.popupView.render().el);
+			}, 1000 //more time is not good for user to wait.
+	);
+	
   };
   
   Login.loginFailed = function(r) {
@@ -78,6 +89,10 @@
 	//{"readyState":4,"responseText":"{\"errorMessage\":[\"You did not provide any details for authentication.\"]}","status":422,"statusText":"Unprocessable Entity"}
   };
   
+  Login.setPopupView = function(popupViewInstance) {
+	  this.popupView = popupViewInstance;
+  };
+	  
   window.Views = window.Views || {};
   window.Views.Login = Backbone.View.extend(Login);
 

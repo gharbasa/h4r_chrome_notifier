@@ -2,7 +2,11 @@
 (function () {
 
   var User = {};
-
+  
+  User.url = function () {
+	  return window.Bkg.settings.apiHost + "/api/1/users";
+  };
+	  
   User.fullName = function () {
     return this.get('fname') + ' ' + this.get('lname');
   };
