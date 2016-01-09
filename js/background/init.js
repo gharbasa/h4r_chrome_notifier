@@ -50,6 +50,7 @@
   //Following variables are added for watcher support. Watcher/Notify list form is shared by task and conversation form.
   Bkg.LOGIN = "login";
   Bkg.TASK_FORM = "new_task";
+  Bkg.USER = "user";
   Bkg.CONV_FORM = "new_conversation";
   Bkg.CREATE_TASK_LABEL = "Create Task";
   Bkg.CREATE_CONV_LABEL = "Create Conversation";
@@ -93,7 +94,8 @@
   Bkg.YESTERDAY = "Yesterday";
   //If the cache was not refreshed in the next iteration(not 200 ok), empty the cache.
   Bkg.clearCache = function() {
-    Bkg.usersession = new Models.UserSession();
+    //Bkg.usersession = new Models.UserSession();
+	Bkg.usersession.clear().set({id: null});
     Bkg.notifications.reset();
     Bkg.projects.reset();
     Bkg.people.reset();

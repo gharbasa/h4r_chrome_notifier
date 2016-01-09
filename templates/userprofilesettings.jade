@@ -1,0 +1,18 @@
+#userprofilesettings
+  br
+  br
+  
+  - if (usersession.isLoggedIn())
+    a.edit-profile.js-edit-profile(title='Edit your profile')
+      = "Edit profile"
+    br
+    br
+
+  a.create-profile.js-create-profile(title='Create a new user profile')
+    = "Create profile"
+
+  br
+  br
+  - if (usersession.isLoggedIn())
+    a.logout.js-logout(title='Logout')
+      = "Logout"   

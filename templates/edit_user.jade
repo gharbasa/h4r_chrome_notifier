@@ -1,0 +1,50 @@
+-// This can only load if we have projects and task lists..
+
+form
+  .errors(style= 'display: none')
+  .field
+    label First name:
+    input(id='fname', name= 'fname', placeholder= "First name", value=user.get("fname"))
+  .field
+    label Middle name:
+    input(id='mname', name= 'mname', placeholder= "Middle name", value=user.get("mname"))
+  .field
+    label Last name:
+    input(id='lname', name= 'lname', placeholder= "Last name", value=user.get("lname"))
+  .field
+    label login:
+    input(id='login', name= 'login', placeholder= "Login id", value=user.get("login"))
+  .field
+    label Email:
+    input(id='email', name= 'email', placeholder= "Email id", value=user.get("email"))
+  .field
+    label Identification:
+    input(id='adhaar_no', name= 'adhaar_no', placeholder= "Aadhar or Driving license No", value=user.get("adhaar_no"))
+  .field
+    label Password:
+    input(type='password', id='password', name= 'password', placeholder= "Password")
+  .field
+    label :
+    input(type='password', id='password_confirmation', name= 'password_confirmation', placeholder= "Confirm password")
+  .field
+    label Phone:
+    input(id='phone1', name= 'phone1', placeholder= "Quick contact", value=user.get("phone1"))
+  .field
+    label Address 1:
+    input(id='addr1', name= 'addr1', placeholder= "Address 1", value=user.get("addr1"))
+  .field
+    label Address 2:
+    input(id='addr2', name= 'addr2', placeholder= "Address 2", value=user.get("addr2"))
+  .field
+    label Address 3:
+    input(id='addr3', name= 'addr3', placeholder= "Address 3", value=user.get("addr3"))
+  .field
+    label Address 4:
+    input(id='addr4', name= 'addr4', placeholder= "Address 4", value=user.get("addr4"))
+  .field
+    label Verified:
+    input(type="checkbox", id='verified', name= 'verified', checked=user.get("verified"), disabled=true)
+  .field.submit
+      input(type= "submit", value= "Done", id="new_user_submit")
+    
+

@@ -42,3 +42,26 @@
 #header a.icon-home-header {
   font-size:15px;  
 }
+
+#userprofilesettings {
+  font-size: 12px;
+  display: block;
+  padding-left: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+#userprofilesettings a {
+  color: #25789C;
+  outline: none;
+  margin-right: 5px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+#userprofilesettings a:hover {
+  color: black ;
+  text-decoration: underline;
+  cursor:pointer;
+}

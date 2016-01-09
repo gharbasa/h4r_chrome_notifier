@@ -7,8 +7,8 @@
   var watchersSelected = ""; //Selected list of watcher ids comma separated
   var projectId4Watchers = ""; //Current project's people in the watchers list form.
   Popup.events = {
-    'focus .js-hover-user': 'showUserProfileMenu',
-    'click .js-hover-user': 'showUserProfileMenu',
+    'click .js-hover-user': 'toggleUserProfileView',
+    
     'click .js-new-task':   'toggleNewTask',
     'click .js-open-tb':    'openCAWM',
     'click .js-open-tasks': 'openTasks',
@@ -21,11 +21,24 @@
     'blur #created_task_conv_link_textbox': 'linkTextboxBlur',
     'click .icon-home-header':   'hideAllAndShowNotifications'
   };
-
+  
+  //_.extend(Popup, Backbone.Events);
+  
   Popup.initialize = function () {
     if(Bkg.DEBUG)
-      console.log("Popup.initialize ");
+      console.log("Popup.initialize Bkg.usersession=" + JSON.stringify(Bkg.usersession));
     this.notifications_view = new Views.Notifications({ collection: Bkg.notifications });
+    this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
+    this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
+    this.login_view = new Views.Login();
+    this.userprofile_view.setPopupView(this);
+    this.login_view.setPopupView(this);
+    this.edit_user_view.setPopupView(this);
+    
+    Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
+    //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
+    Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
+    Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
     //this.new_task_view = new Views.NewTask();
     //this.new_conversation_view = new Views.NewConversation();
     //this.users_view = new Views.Users({ collection: Bkg.users });
@@ -37,22 +50,109 @@
     //this.users_view.setPopupView(this);
   };
   
-  Popup.showUserProfileMenu = function (e) {
+  Popup.toggleUserProfileView = function (e) {
     e.preventDefault();
-    console.log("On focus of user name hyperlink");
-    this.$el.append(Template('userprofilemenu').$el);
+    if(Bkg.DEBUG)
+    	console.log("toggleUserProfileView:: Toggling userprofileview");
+    this.userprofile_view.$el.toggle();
+    if (this.userprofile_view.$el.is(':visible')) {
+    	console.log("toggleUserProfileView-userprofile is visible, re-render it.");
+    	this.userprofile_view.render();
+    	this.hideLoginView();
+    	this.hideNotifications();
+    	this.hideEditUserView();
+    	this.activateCurrentTab(Bkg.USER);
+        //this.hideNewConversation();
+        //this.hideWatchersList();
+        //this.initializeTaskView();
+    }
+    else
+    {
+    	console.log("toggleUserProfileView-userprofile is hidden");
+    	if (Bkg.usersession.isLoggedIn()) {
+    		console.log("User is logged -in, so show notifications");
+    		this.showNotifications();
+    		this.hideEditUserView();
+    		this.activateCurrentTab("");
+    	} else {
+    		console.log("User is NOT logged -in, so show login screen.");
+    		this.showLoginScreen();
+    	}
+    }
   };
   
-  Popup.hideUserProfileMenu = function (e) {
-	e.preventDefault();
-	console.log("Hide user name hyperlink");
-	  //this.$el.html(Template('userprofilemenu')());  
+  
+  Popup.userSessionExpiredEvent = function(msg) {
+	  console.log("userSessionExpiredEvent, preparing login screen.");
+	  Bkg.clearCache();
+	  this.$(".user").text(Bkg.usersession.fullName());
+	  this.hideNotifications();
+	  this.hideUserProfileMenu();
+	  this.hideEditUserView();
+	  this.showLoginScreen();
   };
-	  
+  
+  Popup.showEditUserViewEvent = function(msg) {
+	  console.log("Popup.showEditUserViewEvent");
+	  this.hideUserProfileMenu();
+	  this.showEditUserView();
+  };
+  
+  Popup.showCreateUserViewEvent = function(msg) {
+	  console.log("Popup.showCreateUserViewEvent");
+	  this.hideUserProfileMenu();
+	  this.showCreateUserView();
+  };
+  
+  Popup.userEditedEvent = function(msg) {
+	  console.log("userEditedEvent, preparing notifications screen.");
+	  this.$(".user").text(Bkg.usersession.fullName());
+	  this.hideUserProfileMenu();
+	  this.hideEditUserView();
+	  if(!Bkg.usersession.isLoggedIn()) {
+		  Bkg.clearCache();
+		  this.hideNotifications();
+		  this.showLoginScreen();
+	  } else {
+		  this.showNotifications();
+		  this.hideLoginScreen();
+	  }
+  };
+  
+  Popup.showLoginScreen = function () {
+	  this.login_view.$el.show();
+  };
+  
+  Popup.hideEditUserView = function () {
+	this.edit_user_view.$el.hide();
+  };
+  
+  Popup.showEditUserView = function () {
+	  this.edit_user_view.model = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  this.edit_user_view.render();
+	  this.edit_user_view.$el.show();
+  };
+  
+  Popup.showCreateUserView = function () {
+	  this.edit_user_view.model = new Models.User();
+	  this.edit_user_view.render();
+	  this.edit_user_view.$el.show();
+  };
+  
+  Popup.hideUserProfileMenu = function () {
+	  console.log("Hiding user profile menu");
+	  this.userprofile_view.$el.hide();
+  };
+  
+  Popup.hideLoginView = function () {
+	  this.login_view.$el.hide();
+  };
+  
   Popup.activateCurrentTab = function(tabName){
     this.$(".new_conversation").removeClass('currentactivelink');
     this.$(".new_task").removeClass('currentactivelink');
     this.$(".icon-home-header").removeClass('currentactivelink');
+    this.$(".user").removeClass('currentactivelink');
     
     if(tabName === Bkg.CONV_FORM){
       this.$(".new_conversation").addClass('currentactivelink');
@@ -60,8 +160,13 @@
     else if(tabName === Bkg.TASK_FORM){
       this.$(".new_task").addClass('currentactivelink');
     }
+    else if(tabName === Bkg.USER){
+        this.$(".user").addClass('currentactivelink');
+    } else {
+    	this.$(".icon-home-header").addClass('currentactivelink');
+    }
   };
-
+  
   Popup.toggleNewTask = function (e) {
     if(Bkg.DEBUG)
       console.log("toggleNewTask:: Toggling taskView");
@@ -179,8 +284,9 @@
    */
   Popup.render = function () {
     if(Bkg.DEBUG)
-      console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
-           ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
+      //console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
+      //     ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
+    console.log("Popup.render=" + JSON.stringify(Bkg.usersession));
     this.$el.html(Template('header')());
     this.resetInstanceVariables();
     //this.$el.append(this.new_search_view.render().$el);
@@ -209,15 +315,27 @@
       //this.$el.append(this.new_task_view.render().$el.hide());
       //this.$el.append(this.new_conversation_view.render().$el.hide());
       //this.$el.append(this.notifications_view.render().$el);
+    	
     //}
-    this.$el.append(this.notifications_view.render().$el);
+    if (Bkg.usersession.isLoggedIn()) {
+    	console.log("User is logged-in");
+    	this.$el.append(this.notifications_view.render().$el);
+    	this.$el.append(this.login_view.render().$el.hide());
+    }
+    else {
+    	console.log("User is NOT logged-in");
+    	this.$el.append(this.login_view.render().$el);
+    }
+    
+    this.$el.append(this.userprofile_view.render().$el.hide());
+    this.$el.append(this.edit_user_view.render().$el.hide());
     return this;
   };
-
+  
   Popup.openCAWM = function () {
     trackEvent("open_cawm", "Click");
   };
-
+  
   Popup.openTasks = function () {
     trackEvent("open_tasks", "Click");
   };
@@ -510,6 +628,9 @@
   Popup.hideAllAndShowNotifications = function (e) {
     e.preventDefault();
     if(Bkg.DEBUG) console.log("In the beginning of hideAllAndShowNotifications");
+    this.userEditedEvent("");
+    this.activateCurrentTab("");
+    /*
     if (this.new_task_view.$el.is(':visible')) {
       if(Bkg.DEBUG) console.log("New task form is visible. Hiding it");
       this.new_task_view.hideDialog(); //This will hide new task form and show notifications
@@ -525,7 +646,8 @@
       else if(this.watcherSource === Bkg.CONV_FORM)
       	this.$(".new_conversation").removeClass('currentactivelink');
       this.showNotifications();
-    }
+    }*/
+    
   };
   
   window.Views = window.Views || {};

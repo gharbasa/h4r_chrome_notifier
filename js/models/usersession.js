@@ -9,12 +9,12 @@
 
   UserSession.fullName = function () {
 	//console.log("UserSession.isLoggedIn=" + JSON.stringify(this.get('user'))); - this is good
-    return this.get('fname') + ' ' + this.get('lname');
+    return (this.get('fname')?this.get('fname'):"Hello") + ' ' + (this.get('lname')?this.get('lname'):"There");
   };
 
   UserSession.isLoggedIn = function () {
-	//console.log("UserSession.isLoggedIn=" + JSON.stringify(Bkg.usersession.get("user")));
-	return this.get("id") !== undefined;
+	//console.log("UserSession.isLoggedIn=" + this.get("id"));
+	return ((this.get("id") !== undefined) && (this.get("id") !== null));
   };
   
   UserSession.getUserId = function () {
@@ -25,7 +25,19 @@
   UserSession.csrf = function () {
 	return Bkg.usersession.get('csrf');
   };
-
+  
+  UserSession.logout = function () {
+	  var me = this;
+	  $.ajax({
+		  url: Bkg.settings.apiHost + "/api/1/usersession/1",
+		  type: 'DELETE',
+		  success: function(result) {
+		        console.log("Logout successful.");
+		        me.trigger("usersession:expired","success");
+		  }
+		});
+  };
+  
   window.Models = window.Models || {};
   window.Models.UserSession = Backbone.Model.extend(UserSession);
 

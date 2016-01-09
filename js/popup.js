@@ -9,6 +9,9 @@ window.Bkg = chrome.extension.getBackgroundPage().Bkg;
 
 $(function () {
   var view = null;
+  view = new Views.Popup();
+  $("#content").append(view.render().el);
+  /*
   if (Bkg.usersession.isLoggedIn()) {
     view = new Views.Popup();
     $("#content").append(view.render().el);
@@ -24,7 +27,7 @@ $(function () {
     
 	
   }
-  
+  */
   //Insert content script in the current tab. This script is defined as content script in manifest file.
   if(Bkg.DEBUG) console.log("Bkg.fromContextMenu=" + Bkg.fromContextMenu);
   //if(Bkg.fromContextMenu === -1) //-1 means popup is not launched from contextmenu right click, instead its a regular launch
@@ -77,4 +80,5 @@ $(function () {
   Bkg.fromContextMenu = -1;
   Bkg.selectedContextMenuId = "";
   */
+  
 });
