@@ -27,18 +27,26 @@
   Popup.initialize = function () {
     if(Bkg.DEBUG)
       console.log("Popup.initialize Bkg.usersession=" + JSON.stringify(Bkg.usersession));
+    var currentUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
     this.notifications_view = new Views.Notifications({ collection: Bkg.notifications });
     this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
     this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
+    this.update_user_avatar = new Views.UpdateUserAvatar({model: currentUser});
     this.login_view = new Views.Login();
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
     this.edit_user_view.setPopupView(this);
+    this.update_user_avatar.setPopupView(this);
     
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
     //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
     Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
+    Bkg.usersession.on('view:create_user:success', this.userEditedEvent, this);
+    Bkg.usersession.on('view:update_user:success', this.userEditedEvent, this);
+    Bkg.usersession.on('view:show:update_avatar', this.showUpdateAvatarViewEvent, this);
+    Bkg.usersession.on('view:user_avatar:success', this.udpatedUserAvatarEvent, this);
+    
     //this.new_task_view = new Views.NewTask();
     //this.new_conversation_view = new Views.NewConversation();
     //this.users_view = new Views.Users({ collection: Bkg.users });
@@ -61,6 +69,7 @@
     	this.hideLoginView();
     	this.hideNotifications();
     	this.hideEditUserView();
+    	this.hideUpdateAvatarView();
     	this.activateCurrentTab(Bkg.USER);
         //this.hideNewConversation();
         //this.hideWatchersList();
@@ -86,9 +95,9 @@
 	  console.log("userSessionExpiredEvent, preparing login screen.");
 	  Bkg.clearCache();
 	  this.$(".user").text(Bkg.usersession.fullName());
-	  this.hideNotifications();
+	  //this.hideNotifications();
 	  this.hideUserProfileMenu();
-	  this.hideEditUserView();
+	  //this.hideEditUserView();
 	  this.showLoginScreen();
   };
   
@@ -98,29 +107,54 @@
 	  this.showEditUserView();
   };
   
+  //abed
+  Popup.showUpdateAvatarViewEvent = function(msg) {
+	  console.log("Popup.showUpdateAvatarViewEvent");
+	  this.hideUserProfileMenu();
+	  this.showUpdateAvatarView();
+  };
+  
   Popup.showCreateUserViewEvent = function(msg) {
 	  console.log("Popup.showCreateUserViewEvent");
 	  this.hideUserProfileMenu();
 	  this.showCreateUserView();
   };
   
+  Popup.udpatedUserAvatarEvent = function(msg) {
+	  console.log("udpatedUserAvatarEvent.");
+	  this.hideUpdateAvatarView();
+	  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  this.showNotifications();
+  };
+  
   Popup.userEditedEvent = function(msg) {
-	  console.log("userEditedEvent, preparing notifications screen.");
-	  this.$(".user").text(Bkg.usersession.fullName());
-	  this.hideUserProfileMenu();
+	  console.log("userEditedEvent.");
 	  this.hideEditUserView();
-	  if(!Bkg.usersession.isLoggedIn()) {
+	  if(Bkg.usersession.isLoggedIn()) {
+		  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+		  console.log("userEditedEvent. User is logged-in, show notifications screen;" + loginUser.fullName());
+		  this.$(".user").text(loginUser.fullName());
+		  this.showNotifications();
+	  } else {
+		  this.$(".user").text(Bkg.usersession.fullName());
 		  Bkg.clearCache();
 		  this.hideNotifications();
 		  this.showLoginScreen();
-	  } else {
-		  this.showNotifications();
-		  this.hideLoginScreen();
 	  }
   };
   
   Popup.showLoginScreen = function () {
 	  this.login_view.$el.show();
+  };
+  
+  Popup.showUpdateAvatarView = function () {
+	  this.update_user_avatar.model = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  this.update_user_avatar.render();
+	  this.update_user_avatar.$el.show();  
+  };
+  
+  Popup.hideUpdateAvatarView = function () {
+	  this.update_user_avatar.$el.hide();  
   };
   
   Popup.hideEditUserView = function () {
@@ -329,6 +363,7 @@
     
     this.$el.append(this.userprofile_view.render().$el.hide());
     this.$el.append(this.edit_user_view.render().$el.hide());
+    this.$el.append(this.update_user_avatar.render().$el.hide());
     return this;
   };
   
@@ -628,26 +663,35 @@
   Popup.hideAllAndShowNotifications = function (e) {
     e.preventDefault();
     if(Bkg.DEBUG) console.log("In the beginning of hideAllAndShowNotifications");
-    this.userEditedEvent("");
-    this.activateCurrentTab("");
-    /*
-    if (this.new_task_view.$el.is(':visible')) {
-      if(Bkg.DEBUG) console.log("New task form is visible. Hiding it");
-      this.new_task_view.hideDialog(); //This will hide new task form and show notifications
-    }
-    else if (this.new_conversation_view.$el.is(':visible')) {
-      if(Bkg.DEBUG) console.log("New conversation form is visible. Hiding it");
-      this.new_conversation_view.hideDialog(); //This will hide new task form and show notifications
-    } else if(this.users_view.$el.is(':visible')) { //watchers are visible in the context of new task/conversation
-      if(Bkg.DEBUG) console.log("Watchers form is visible. Hiding it");
-      this.hideWatchersList();
-      if(this.watcherSource === Bkg.TASK_FORM)
-        this.$(".new_task").removeClass('currentactivelink');
-      else if(this.watcherSource === Bkg.CONV_FORM)
-      	this.$(".new_conversation").removeClass('currentactivelink');
-      this.showNotifications();
-    }*/
-    
+    this.hideUserProfileMenu();
+    this.hideEditUserView();
+    this.hideUpdateAvatarView();
+    this.showNotifications();
+  };
+  
+  //not used, its only reference
+  Popup.renderNotifications = function () {
+	    if(Bkg.DEBUG) console.log("In the beginning of showNotifications");
+	    this.userEditedEvent("");
+	    
+	    /*
+	    if (this.new_task_view.$el.is(':visible')) {
+	      if(Bkg.DEBUG) console.log("New task form is visible. Hiding it");
+	      this.new_task_view.hideDialog(); //This will hide new task form and show notifications
+	    }
+	    else if (this.new_conversation_view.$el.is(':visible')) {
+	      if(Bkg.DEBUG) console.log("New conversation form is visible. Hiding it");
+	      this.new_conversation_view.hideDialog(); //This will hide new task form and show notifications
+	    } else if(this.users_view.$el.is(':visible')) { //watchers are visible in the context of new task/conversation
+	      if(Bkg.DEBUG) console.log("Watchers form is visible. Hiding it");
+	      this.hideWatchersList();
+	      if(this.watcherSource === Bkg.TASK_FORM)
+	        this.$(".new_task").removeClass('currentactivelink');
+	      else if(this.watcherSource === Bkg.CONV_FORM)
+	      	this.$(".new_conversation").removeClass('currentactivelink');
+	      this.showNotifications();
+	    }*/
+	    
   };
   
   window.Views = window.Views || {};

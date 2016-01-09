@@ -1,0 +1,14 @@
+-// This can only load if we have projects and task lists..
+
+form
+  .errors(style= 'display: none')
+  
+  .field
+    img.update_avatar(src= user.getAvatar())
+  
+  .field
+    label Avatar:
+    input(type='file', id='user_avatar', name= 'user_avatar', placeholder= "Upload your avatar")
+  .field.submit
+    input(type= "submit", value= "Done", id="update_user_avatar_submit")
+    
