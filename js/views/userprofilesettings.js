@@ -24,7 +24,7 @@
     this.$el
       //.attr({ 'id': this.model.get('id') })
       .html(Template('userprofilesettings')({
-        usersession: Bkg.usersession
+        usersession: this.model
       }));
     return this;
   };
@@ -36,7 +36,7 @@
     e.stopPropagation();
     if(Bkg.DEBUG)
       console.log("Userprofilesettings.logoutClicked");
-    Bkg.usersession.logout();
+    this.model.logout();
   }; 
   
   /**
@@ -45,14 +45,14 @@
     e.stopPropagation();
     if(Bkg.DEBUG)
       console.log("Userprofilesettings.editProfileClicked");
-    Bkg.usersession.trigger("view:show:edit_user","");
+    this.model.trigger("view:show:edit_user","");
   }; 
   
   Userprofilesettings.createProfileClicked = function (e) {
 	  e.stopPropagation();
 	  if(Bkg.DEBUG)
 	    console.log("Userprofilesettings.createProfileClicked");
-	  
+	  this.model.trigger("view:show:create_user","");
   };
   
   Userprofilesettings.setPopupView = function(popupViewInstance) {

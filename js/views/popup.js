@@ -28,16 +28,17 @@
     if(Bkg.DEBUG)
       console.log("Popup.initialize Bkg.usersession=" + JSON.stringify(Bkg.usersession));
     this.notifications_view = new Views.Notifications({ collection: Bkg.notifications });
-    this.userprofile_view = new Views.Userprofilesettings({usersession: Bkg.usersession});
-    this.edit_user_view = new Views.EditUser({usersession: Bkg.usersession});
+    this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
+    this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
     this.login_view = new Views.Login();
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
     this.edit_user_view.setPopupView(this);
     
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
-    Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
+    //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
+    Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
     //this.new_task_view = new Views.NewTask();
     //this.new_conversation_view = new Views.NewConversation();
     //this.users_view = new Views.Users({ collection: Bkg.users });
@@ -92,9 +93,15 @@
   };
   
   Popup.showEditUserViewEvent = function(msg) {
-	  console.log("Popup.showEditUserView");
+	  console.log("Popup.showEditUserViewEvent");
 	  this.hideUserProfileMenu();
 	  this.showEditUserView();
+  };
+  
+  Popup.showCreateUserViewEvent = function(msg) {
+	  console.log("Popup.showCreateUserViewEvent");
+	  this.hideUserProfileMenu();
+	  this.showCreateUserView();
   };
   
   Popup.userEditedEvent = function(msg) {
@@ -121,9 +128,17 @@
   };
   
   Popup.showEditUserView = function () {
-	this.edit_user_view.$el.show();
+	  this.edit_user_view.model = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  this.edit_user_view.render();
+	  this.edit_user_view.$el.show();
   };
-	  
+  
+  Popup.showCreateUserView = function () {
+	  this.edit_user_view.model = new Models.User();
+	  this.edit_user_view.render();
+	  this.edit_user_view.$el.show();
+  };
+  
   Popup.hideUserProfileMenu = function () {
 	  console.log("Hiding user profile menu");
 	  this.userprofile_view.$el.hide();
@@ -269,8 +284,9 @@
    */
   Popup.render = function () {
     if(Bkg.DEBUG)
-      console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
-           ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
+      //console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
+      //     ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
+    console.log("Popup.render=" + JSON.stringify(Bkg.usersession));
     this.$el.html(Template('header')());
     this.resetInstanceVariables();
     //this.$el.append(this.new_search_view.render().$el);
@@ -319,7 +335,7 @@
   Popup.openCAWM = function () {
     trackEvent("open_cawm", "Click");
   };
-
+  
   Popup.openTasks = function () {
     trackEvent("open_tasks", "Click");
   };
