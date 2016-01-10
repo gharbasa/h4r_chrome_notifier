@@ -9,11 +9,12 @@
   var Userprofilesettings = {
     className: 'userprofilesettings'
   };
-  
+  //model here is usersession
   Userprofilesettings.events = {
     'click .js-edit-profile' : 'editProfileClicked'
    ,'click .js-logout' : 'logoutClicked'
    ,'click .js-create-profile' : 'createProfileClicked'
+   ,'click .js-update-avatar' : 'updateAvatar'
   };
   
   /**
@@ -53,6 +54,13 @@
 	  if(Bkg.DEBUG)
 	    console.log("Userprofilesettings.createProfileClicked");
 	  this.model.trigger("view:show:create_user","");
+  };
+  
+  Userprofilesettings.updateAvatar = function (e) {
+	  e.stopPropagation();
+	  if(Bkg.DEBUG)
+	    console.log("Userprofilesettings.updateAvatar");
+	  this.model.trigger("view:show:update_avatar","");
   };
   
   Userprofilesettings.setPopupView = function(popupViewInstance) {

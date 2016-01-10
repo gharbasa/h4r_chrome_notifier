@@ -29,10 +29,14 @@
   UserSession.logout = function () {
 	  var me = this;
 	  $.ajax({
-		  url: Bkg.settings.apiHost + "/api/1/usersession/1",
+		  url: Bkg.settings.apiHost + "/api/1/usersession/1", //1 is just place holder
 		  type: 'DELETE',
 		  success: function(result) {
 		        console.log("Logout successful.");
+		        me.trigger("usersession:expired","success");
+		  },
+		  error: function(result) {
+		        console.log("Error in logout.");
 		        me.trigger("usersession:expired","success");
 		  }
 		});

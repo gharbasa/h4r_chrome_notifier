@@ -6,6 +6,7 @@
 (function () {
   
   var popupView;
+  //model here is the User model instance
   var EditUser = {
     className: 'edit_user'
   };
@@ -49,63 +50,54 @@
    // 	this.createUser(params);
     //} else {
     	console.log("Its an editing existing user");
-    	this.createUser(params);
+    	this.editUser(params);
     //}
   }; 
   
-  EditUser.createUser = function (params) {
-	  console.log("Edit User view. Creating user.");
+  EditUser.editUser = function (params) {
+	  console.log("Edit User view. editUser function.");
 	  //var user = new Models.User(params);
 	  //user.save(null,
+	  var isCreate = true;
 	  if(this.model.isIdExists()) {
 		  params.id = this.model.get("id");
+		  isCreate = false;
 	  }
 	  this.model.save(params,
 			  {
 		  		success: function (model, response) {
-		  			console.log("success, adding user to the collection");
-		  			Bkg.users.add(model);
-		  			this.$('.errors').show().text("Successfully created the user.");
-		  			if(Bkg.usersession.isLoggedIn()) {
-		  				//Show notifications panel in timeout.
-		  				
+		  			var msg = "";
+		  			if(isCreate) {
+		  				msg = "success, creating the user";
+		  				Bkg.users.add(model);
 		  			}
+		  			else
+		  				msg = "success, updating the user";
+		  			
+		  			console.log(msg);
+		  			this.$('.errors').show().text(msg);
+		  			if(isCreate)
+		  				Bkg.usersession.trigger("view:create_user:success","");
+		  			else
+		  				Bkg.usersession.trigger("view:update_user:success","");
 		  		},
 		  		error: function (model, response) {
-		  			console.log("error creating the user=" + JSON.stringify(response));
+		  			if(isCreate) {
+		  				console.log("error creating the user=" + JSON.stringify(response));
+		  			}
+		  			else {
+		  				console.log("error Updating the user=" + JSON.stringify(response));
+		  			}
 		  			var responseText = JSON.parse(response.responseText);
-		  			var errorMsg = response.responseText;
+		  			var errorMsg = "";
 		  			if(responseText.errorMessage)
-		  				errorMsg = responseText.errorMessage;
-		  			this.$('.errors').show().text(errorMsg[0]);
+		  				errorMsg = responseText.errorMessage[0];
+		  			else
+		  				errorMsg = response.statusText;
+		  			this.$('.errors').show().text(errorMsg);
 		  		}
 			  }
 	  );
-	  /*
-	  $.post(localStorage['api_host'] + "/api/1/users", params, "json")
-      .always(function () {
-        self.$('input[type=submit]').val("Create task").removeAttr("disabled");
-      })
-      .done(this.userCreated.bind(this))
-      .fail(this.createUserFailed.bind(this));
-      */
-  };
-  
-  EditUser.userCreated = function (msg) {
-	  console.log("Status message after user is created=" + JSON.stringify(msg));
-  };
-  
-  EditUser.editUser = function (params) {
-	  $.post(localStorage['api_host'] + "/api/1/users", params, "json")
-      .always(function () {
-        self.$('input[type=submit]').val("Create task").removeAttr("disabled");
-      })
-      .done(this.userCreated.bind(this))
-      .fail(this.createUserFailed.bind(this));
-  };
-  
-  EditUser.isCreateUser = function () {
-	  return !this.model.isLoggedIn();
   };
   
   EditUser.setPopupView = function(popupViewInstance) {

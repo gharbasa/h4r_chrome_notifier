@@ -15,10 +15,15 @@
   };
   
   User.fullName = function () {
+	  return (this.get('fname')?this.get('fname'):"Hello") + ' ' + (this.get('lname')?this.get('lname'):"There");
+  };
+	/*  
+  User.fullName = function () {
     return this.get('fname') + ' ' + this.get('lname');
   };
-  
+  */
   User.getAvatar = function () {
+	  //console.log("Avatar:" + window.Bkg.settings.apiHost + this.get('avatar'));
 	  return window.Bkg.settings.apiHost + this.get('avatar');
   };
   
