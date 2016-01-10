@@ -68,5 +68,7 @@ form .errors {
 }
 
 .update_avatar {
-    padding-left: 40px;    
+    padding-left: 40px;
+    width:100px;
+    height:100px
 }

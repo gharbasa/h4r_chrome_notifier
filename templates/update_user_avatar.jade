@@ -4,7 +4,8 @@ form
   .errors(style= 'display: none')
   
   .field
-    img.update_avatar(src= user.getAvatar())
+    - if (user != null)
+      img.update_avatar(src= user.getAvatar())
   
   .field
     label Avatar:

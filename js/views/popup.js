@@ -124,6 +124,7 @@
 	  console.log("udpatedUserAvatarEvent.");
 	  this.hideUpdateAvatarView();
 	  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  //loginUser.fetch({});
 	  this.showNotifications();
   };
   
