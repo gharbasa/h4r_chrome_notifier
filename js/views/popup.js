@@ -27,11 +27,11 @@
   Popup.initialize = function () {
     if(Bkg.DEBUG)
       console.log("Popup.initialize Bkg.usersession=" + JSON.stringify(Bkg.usersession));
-    var currentUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+    //var currentUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
     this.notifications_view = new Views.Notifications({ collection: Bkg.notifications });
     this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
     this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
-    this.update_user_avatar = new Views.UpdateUserAvatar({model: currentUser});
+    this.update_user_avatar = new Views.UpdateUserAvatar();
     this.login_view = new Views.Login();
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
