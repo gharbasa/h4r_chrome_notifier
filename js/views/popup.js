@@ -668,7 +668,12 @@
     this.hideUserProfileMenu();
     this.hideEditUserView();
     this.hideUpdateAvatarView();
-    this.showNotifications();
+    if (Bkg.usersession.isLoggedIn()) {
+    	this.showNotifications();
+    } else {
+    	this.hideNotifications();
+    	this.showLoginScreen();
+    }
     this.activateCurrentTab("");
   };
   
