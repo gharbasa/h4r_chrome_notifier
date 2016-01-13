@@ -76,6 +76,12 @@
     }
   };
 
+  Notification.getDisplayDate = function () {
+    var created_at = this.get('created_at'); //GMT date in UTC format
+    var localDate = new Date(created_at);
+    return localDate.toDateString() + "-" + localDate.getHours() +":" + localDate.getMinutes();
+  };
+  
   // Persists read state to the server
   Notification.markAsRead = function () {
     $.post(

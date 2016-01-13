@@ -6,7 +6,7 @@ p.empty {
 .notification {
   font-size: 12px;
   position: relative;
-  min-height: 48px;
+  min-height: 68px;
   margin: 0;
   padding: 10px 20px 10px 50px;
   border-bottom: 1px solid #ddd;
@@ -31,7 +31,10 @@ p.empty {
       display: block;
       text-decoration: none;
     }
-    
+ 
+ .notification .created_at {
+     float: right
+ }   
     /* Following tags are used in new task/conversation form, hence is the reason .notification prefix was not mentioned. */    
     a.hashtag {
       text-decoration: none;
