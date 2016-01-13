@@ -7,8 +7,6 @@
   var watchersSelected = ""; //Selected list of watcher ids comma separated
   var projectId4Watchers = ""; //Current project's people in the watchers list form.
   Popup.events = {
-    'click .js-hover-user': 'toggleUserProfileView',
-    
     'click .js-new-task':   'toggleNewTask',
     'click .js-open-tb':    'openCAWM',
     'click .js-open-tasks': 'openTasks',
@@ -32,11 +30,13 @@
     this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
     this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
     this.update_user_avatar = new Views.UpdateUserAvatar();
+    this.header_view = new Views.Header();
     this.login_view = new Views.Login();
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
     this.edit_user_view.setPopupView(this);
     this.update_user_avatar.setPopupView(this);
+    this.header_view.setPopupView(this);
     
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
     //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
@@ -94,7 +94,8 @@
   Popup.userSessionExpiredEvent = function(msg) {
 	  console.log("userSessionExpiredEvent, preparing login screen.");
 	  Bkg.clearCache();
-	  this.$(".user").text(Bkg.usersession.fullName());
+	  //this.$(".user").text(Bkg.usersession.fullName());
+	  this.header_view.render();
 	  //this.hideNotifications();
 	  this.hideUserProfileMenu();
 	  //this.hideEditUserView();
@@ -131,13 +132,14 @@
   Popup.userEditedEvent = function(msg) {
 	  console.log("userEditedEvent.");
 	  this.hideEditUserView();
+	  this.header_view.render();
 	  if(Bkg.usersession.isLoggedIn()) {
 		  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
 		  console.log("userEditedEvent. User is logged-in, show notifications screen;" + loginUser.fullName());
-		  this.$(".user").text(loginUser.fullName());
+		  //this.$(".user").text(loginUser.fullName());
 		  this.showNotifications();
 	  } else {
-		  this.$(".user").text(Bkg.usersession.fullName());
+		  //this.$(".user").text(Bkg.usersession.fullName());
 		  Bkg.clearCache();
 		  this.hideNotifications();
 		  this.showLoginScreen();
@@ -322,7 +324,8 @@
       //console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
       //     ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
     console.log("Popup.render=" + JSON.stringify(Bkg.usersession));
-    this.$el.html(Template('header')());
+    //this.$el.html(Template('header')());
+    this.$el.append(this.header_view.render().$el);
     this.resetInstanceVariables();
     //this.$el.append(this.new_search_view.render().$el);
     //this.$el.append(this.users_view.render().$el.hide()); //Its good to be the 1st one rendered
