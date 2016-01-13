@@ -12,3 +12,6 @@
   
   a.user.js-hover-user(href="#", title='Manage your account') 
     = user.fullName()
+  - if (user.get("verified") === true)
+    span.user_verified_status
+      i.icon-check

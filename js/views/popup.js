@@ -16,8 +16,7 @@
     'click .js_notify_select_none': 'selectNoneWatchers',
     'click .js_notify_select_all': 'selectAllWatchers',
     'click .created_task_conv_link': 'createdLinkClick',
-    'blur #created_task_conv_link_textbox': 'linkTextboxBlur',
-    'click .icon-home-header':   'hideAllAndShowNotifications'
+    'blur #created_task_conv_link_textbox': 'linkTextboxBlur'
   };
   
   //_.extend(Popup, Backbone.Events);
@@ -108,7 +107,6 @@
 	  this.showEditUserView();
   };
   
-  //abed
   Popup.showUpdateAvatarViewEvent = function(msg) {
 	  console.log("Popup.showUpdateAvatarViewEvent");
 	  this.hideUserProfileMenu();
@@ -671,6 +669,7 @@
     this.hideEditUserView();
     this.hideUpdateAvatarView();
     this.showNotifications();
+    this.activateCurrentTab("");
   };
   
   //not used, its only reference

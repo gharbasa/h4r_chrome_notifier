@@ -15,6 +15,7 @@
     //'click #new_user_submit' : 'editUserClicked'
 	//'submit': 'editUserClicked'
     'click .js-hover-user': 'toggleUserProfileView'
+   ,'click .icon-home-header':   'hideAllAndShowNotifications' 
   };
   
   Header.initialize = function () {
@@ -41,7 +42,11 @@
   Header.toggleUserProfileView = function (e) {
 	  this.popupView.toggleUserProfileView(e);
   };
-	  
+  
+  Header.hideAllAndShowNotifications = function (e) {
+	  this.popupView.hideAllAndShowNotifications(e);
+  };
+  
   Header.setPopupView = function(popupViewInstance) {
     this.popupView = popupViewInstance;
   };

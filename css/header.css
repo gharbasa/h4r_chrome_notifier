@@ -43,6 +43,11 @@
   font-size:15px;  
 }
 
+#header .user_verified_status{
+    float: right;
+    margin-top:3px
+}
+
 #userprofilesettings {
   font-size: 12px;
   display: block;
