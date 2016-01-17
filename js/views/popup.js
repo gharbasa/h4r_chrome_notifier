@@ -98,6 +98,7 @@
 	  this.hideUserProfileMenu();
 	  //this.hideEditUserView();
 	  this.showLoginScreen();
+	  this.setFocus();
   };
   
   Popup.showEditUserViewEvent = function(msg) {
@@ -601,8 +602,20 @@
    * control_name
    *   Name of the control, id attribute (prefixed with # is recommended)
    */
-  Popup.setFocus = function (control_name) {
-    if(Bkg.DEBUG) console.log("In the beginnig of setFocus() method, control_name=" + control_name);
+  Popup.setFocus = function () {
+    if(Bkg.DEBUG) console.log("In the beginnig of setFocus() method");
+    var control_name = "";
+    var timeInterval = 500;// 1 second
+    if (!Bkg.usersession.isLoggedIn()) {
+    	control_name = "#login";
+    }
+    if(control_name != "") {
+    	setTimeout(function() {
+    		this.$(control_name).focus();
+    	}, timeInterval);
+    }
+    
+    /*
     var CONTEXT_LAUNCH_TIME_INTERVAL = 600; //half second, this is bit longer time, its because rendering happens on the fly.
     var GENERAL_TIME_INTERVAL = 150; //Rendering already happened, its just a hide/visible.
     var timeInterval = GENERAL_TIME_INTERVAL;
@@ -624,6 +637,7 @@
     setTimeout(function() {
           this.$(control_name).focus();
     }, timeInterval);
+    */
   };
   
   Popup.createdLinkClick = function (e) {
