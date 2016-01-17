@@ -38,7 +38,6 @@
     this.header_view.setPopupView(this);
     
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
-    //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
     Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
     Bkg.usersession.on('view:create_user:success', this.userEditedEvent, this);
