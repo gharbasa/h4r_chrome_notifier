@@ -32,6 +32,7 @@
   Bkg.projects = new Collections.Projects();
   Bkg.people = new Collections.People();
   Bkg.users = new Collections.Users();
+  Bkg.houses = new Collections.Houses();
   Bkg.task_lists = new Collections.TaskLists();
   
   //Following 3 variables are to capture web content from current active tab

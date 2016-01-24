@@ -1,12 +1,12 @@
 #header
   a.icon-home-header.currentactivelink(href="#", title='Notifications')
     i.icon-bell
-    
-  a.new_task.js-new-task(href="#", title='Create a new task')
-    = "New Task"
-
-  span.verticalLine
-
+  
+  - if (Bkg.usersession.isLoggedIn())
+    a.manage-houses.js-manage-houses(href="#", title='Manage/Search houses')
+      = "Houses"
+    span.verticalLine
+  
   a.new_conversation.js-new-conversation(href="#", title='Create a new conversation')
     = "New Conversation" 
   

@@ -1,4 +1,4 @@
-#userprofilesettings
+#view_userprofilesettings
   br
   br
   
@@ -16,7 +16,13 @@
 
   a.create-profile.js-create-profile(title='Create a new user profile')
     = "Create profile"
-
+    
+  - if (usersession.isLoggedIn() && user.admin())
+    br
+    br
+    a.verify-user.js-verify-user(title="Update user's verification flag")
+      = "Verify users(Todo)"
+  
   br
   br
   - if (usersession.isLoggedIn())

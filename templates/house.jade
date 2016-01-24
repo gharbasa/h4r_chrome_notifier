@@ -1,0 +1,12 @@
+.title
+  span.name
+    != model.get("name")
+
+.content
+  a.icon-cancel.js-dismiss(title="Dismiss")
+
+  != model.get('addr1')
+  
+.created_at
+  != model.getDisplayDate()
+ 

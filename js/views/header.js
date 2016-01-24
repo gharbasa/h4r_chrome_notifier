@@ -15,7 +15,8 @@
     //'click #new_user_submit' : 'editUserClicked'
 	//'submit': 'editUserClicked'
     'click .js-hover-user': 'toggleUserProfileView'
-   ,'click .icon-home-header':   'hideAllAndShowNotifications' 
+   ,'click .icon-home-header':   'hideAllAndShowNotifications'
+   ,'click .js-manage-houses': 'toggleManageHousesClick'
   };
   
   Header.initialize = function () {
@@ -27,7 +28,7 @@
    */
   Header.render = function () {
 	console.log("Header.render");
-	var user = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	var user = Bkg.usersession.getLoginUser();
 	if(user === undefined)
 		user = Bkg.usersession;
 	
@@ -45,6 +46,11 @@
   
   Header.hideAllAndShowNotifications = function (e) {
 	  this.popupView.hideAllAndShowNotifications(e);
+  };
+  
+  Header.toggleManageHousesClick = function (e) {
+	console.debug("Manage houses clicked");  
+	this.popupView.toggleManageHousesView(e);
   };
   
   Header.setPopupView = function(popupViewInstance) {

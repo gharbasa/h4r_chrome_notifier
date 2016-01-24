@@ -48,7 +48,7 @@
     margin-top:3px
 }
 
-#userprofilesettings {
+div[id^='view_'] {
   font-size: 12px;
   display: block;
   padding-left: 12px;
@@ -57,7 +57,7 @@
   padding-bottom: 10px;
 }
 
-#userprofilesettings a {
+div[id^='view_'] a {
   color: #25789C;
   outline: none;
   margin-right: 5px;
@@ -65,7 +65,7 @@
   text-decoration: none;
 }
 
-#userprofilesettings a:hover {
+div[id^='view_'] a:hover {
   color: black ;
   text-decoration: underline;
   cursor:pointer;

@@ -42,6 +42,10 @@
 		});
   };
   
+  UserSession.getLoginUser = function () {
+	  return Bkg.users.getUserByIdentifier(this.get("id"));
+  };
+  
   window.Models = window.Models || {};
   window.Models.UserSession = Backbone.Model.extend(UserSession);
 
