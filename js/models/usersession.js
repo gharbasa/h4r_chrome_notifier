@@ -22,6 +22,10 @@
 	  return this.get('id');
   };
   
+  UserSession.isIdExists = function () {
+	  return ((this.get("id") !== undefined) && (this.get("id") !== null));
+  };
+  
   UserSession.csrf = function () {
 	return Bkg.usersession.get('csrf');
   };

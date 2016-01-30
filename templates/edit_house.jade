@@ -27,9 +27,10 @@ form
     .field
       label Fee:
       input(id='processing_fee', name= 'processing_fee', placeholder= "Processing fee", value=house.get("processing_fee"))
-  .field
-    label Verified:
-    input(type="checkbox", id='verified', name= 'verified', checked=house.get("verified"), disabled=!user.get("admin?"))
+  - if (house.isIdExists())
+    .field
+      label Verified:
+      input(type="checkbox", id='verified', name= 'verified', checked=house.get("verified"), disabled=!user.get("admin?"))
   .field.submit
       input(type= "submit", value= "Done", id="new_house_submit")
     
