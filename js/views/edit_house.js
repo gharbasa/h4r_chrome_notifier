@@ -87,7 +87,7 @@
 		  				msg = "success, updating the house";
 		  			
 		  			console.log(msg);
-		  			this.$('.errors').show().text(msg);
+		  			//this.$('.errors').show().text(msg);
 		  			if(isCreate)
 		  				Bkg.usersession.trigger("view:create_house:success","");
 		  			else

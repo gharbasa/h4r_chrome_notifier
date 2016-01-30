@@ -17,6 +17,7 @@
   House.initialize = function () {
 	  //this.model.on('house:model:updated', this.render, this);
   };
+
 /**
  * Remove from the collection, and mark as read in the server
  */

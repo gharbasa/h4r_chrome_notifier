@@ -10,14 +10,25 @@
     'click .js-dismiss' : 'dismissNotification'
   };
 
-  /**
-   * Remove from the collection, and mark as read in the server
-   */
+/**
+ * Remove from the collection, and mark as read in the server
+ */
 Notification.dismissNotification = function (e) {
   e.preventDefault();
-  this.model.markAsRead();
+  var url = this.model.inactivateUrl();
+	$.post(url, "", "json")
+	 .done(this.updated.bind(this))
+  .fail(this.failedUpdating.bind(this));
+  
+};
+
+Notification.updated = function (response) {
+  console.log("Hey, notification is removed");
   Bkg.notifications.remove(this.model);
-  trackEvent("notification", "Dismiss");
+};
+
+Notification.failedUpdating = function () {
+	console.log("Failed updating notification record.");
 };
 
 //Will buld img tag with the appropriate avatar image.
@@ -239,7 +250,6 @@ function renderUser(assigned_id, position) {
    * Render notification
    */
   Notification.render = function () {
-    //var target = this.model.get('target') || {};
     this.$el
       .attr({ 'id': this.model.id })
       .html(Template('notification')({

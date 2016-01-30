@@ -89,6 +89,10 @@
         this.get('identifier')
     );
   };
+  
+  Notification.inactivateUrl = function () {
+    return this.url() + "/inactivate";
+  };
 
   window.Models = window.Models || {};
   window.Models.Notification = Backbone.Model.extend(Notification);
