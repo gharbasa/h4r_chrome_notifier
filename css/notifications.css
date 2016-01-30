@@ -41,6 +41,9 @@ p.empty {
      font-size: 11px
 }   
 
+.houses_list_form .inactive {
+  background-color:#DDDDDD
+}
 
 
 .house {
