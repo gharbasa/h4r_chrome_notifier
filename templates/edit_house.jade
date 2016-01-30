@@ -1,0 +1,36 @@
+-// Register/Edit a house
+
+form
+  .errors(style= 'display: none')
+  .field
+    label Title:
+    input(id='name', name= 'name', placeholder= "House Title", value=house.get("name"))
+  .field
+    label Address:
+    input(id='addr1', name= 'addr1', placeholder= "House No, Street name", value=house.get("addr1"))
+  .field
+    label :
+    input(id='addr2', name= 'addr2', placeholder= "Land mark", value=house.get("addr2"))
+  .field
+    label :
+    input(id='addr3', name= 'addr3', placeholder= "City", value=house.get("addr3"))
+  .field
+    label :
+    input(id='addr4', name= 'addr4', placeholder= "State", value=house.get("addr4"))
+  .field
+    label BHK:
+    input(id='no_of_portions', name= 'no_of_portions', placeholder= "No. of Bed rooms(BKH)", value=house.get("no_of_portions"))
+  .field
+    label Floor #:
+    input(id='no_of_floors', name= 'no_of_floors', placeholder= "Floor number", value=house.get("no_of_floors"))
+  - if (user.get("admin?") == true)
+    .field
+      label Fee:
+      input(id='processing_fee', name= 'processing_fee', placeholder= "Processing fee", value=house.get("processing_fee"))
+  .field
+    label Verified:
+    input(type="checkbox", id='verified', name= 'verified', checked=house.get("verified"), disabled=!user.get("admin?"))
+  .field.submit
+      input(type= "submit", value= "Done", id="new_house_submit")
+    
+

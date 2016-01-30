@@ -43,7 +43,7 @@ form
     input(id='addr4', name= 'addr4', placeholder= "Address 4", value=user.get("addr4"))
   .field
     label Verified:
-    input(type="checkbox", id='verified', name= 'verified', checked=user.get("verified"), disabled=true)
+    input(type="checkbox", id='verified', name= 'verified', checked=user.get("verified"), disabled=!user.get("admin?"))
   .field.submit
       input(type= "submit", value= "Done", id="new_user_submit")
     

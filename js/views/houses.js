@@ -1,8 +1,15 @@
 
 (function () {
 
-  var Houses = {};
-
+  var Houses = {
+    className: "houses_list_form"
+  };
+  
+  Houses.events = {
+	'click .js-add-house' : 'registerHouseClicked'
+   ,'click .js-search-house' : 'searchHousesClicked'
+  };
+  
   Houses.initialize = function () {
     this.collection.on('remove', this.hideHouse, this);
   };
@@ -12,7 +19,8 @@
    */
   Houses.render = function () {
     var self = this;
-
+    this.$el.empty();
+    this.$el.html(Template('manage_houses')());
     this.collection.each(function (house) {
       var view = new Views.House({ model: house });
       self.$el.append(view.render().el);
@@ -35,6 +43,17 @@
     // Possible memory leak because we aren't deleting the view?
     this.$("#" + m.get('identifier')).remove();
     this.showPrimerIfEmpty();
+  };
+  
+  Houses.registerHouseClicked = function (e) {
+	  e.preventDefault();
+	  Bkg.usersession.trigger("view:edit_house",null);
+	  console.log("Houses.registerHouseClicked");
+  };
+  
+  Houses.searchHousesClicked = function (e) {
+	  e.preventDefault();
+	  console.log("Houses.searchHousesClicked");
   };
   
   Houses.setPopupView = function(popupViewInstance) {

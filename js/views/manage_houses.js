@@ -11,8 +11,8 @@
   };
   //model here is usersession
   ManageHouses.events = {
-    'click .js-register-property' : 'registerHouseClicked'
-   ,'click .js-list-properties' : 'listHousesClicked'
+    'click .js-add-house' : 'registerHouseClicked'
+   ,'click .js-search-house' : 'listHousesClicked'
   };
   
   /**

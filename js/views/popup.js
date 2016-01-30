@@ -32,6 +32,8 @@
     this.header_view = new Views.Header();
     this.login_view = new Views.Login();
     this.manage_houses_view = new Views.ManageHouses();
+    this.edit_house_view = new Views.EditHouse();
+    
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
     this.edit_user_view.setPopupView(this);
@@ -47,6 +49,10 @@
     Bkg.usersession.on('view:update_user:success', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:update_avatar', this.showUpdateAvatarViewEvent, this);
     Bkg.usersession.on('view:user_avatar:success', this.updatedUserAvatarEvent, this);
+    Bkg.usersession.on('view:edit_house', this.showEditHouseViewEvent, this);
+    
+    Bkg.usersession.on('view:create_house:success', this.houseEditedEvent, this);
+    Bkg.usersession.on('view:update_house:success', this.houseEditedEvent, this);
     
     //this.new_task_view = new Views.NewTask();
     //this.new_conversation_view = new Views.NewConversation();
@@ -105,6 +111,12 @@
 	  this.showEditUserView();
   };
   
+  Popup.showEditHouseViewEvent = function(msg) {
+	  console.log("Popup.showEditHouseViewEvent");
+	  this.hideEveryThing();
+	  this.showEditHouseView(msg);
+  };
+  
   Popup.showUpdateAvatarViewEvent = function(msg) {
 	  console.log("Popup.showUpdateAvatarViewEvent");
 	  this.hideUserProfileMenu();
@@ -138,6 +150,14 @@
 	  }
   };
   
+  Popup.houseEditedEvent = function(msg) {
+	  console.log("houseEditedEvent. House data is updated.");
+	  //abed
+	  this.showHouseList();
+	  //this.houses_view.$el.show();
+	  //this.showHouseListView();
+  };
+  
   Popup.toggleManageHousesView = function (e) {
 	  e.preventDefault();
 	  if(Bkg.DEBUG)
@@ -146,8 +166,7 @@
 	  if (this.manage_houses_view.$el.is(':visible')) {
 		  console.log("showManageHousesView is visible, re-render it.");
 		  this.hideEveryThing();
-		  this.manage_houses_view.render();
-		  this.manage_houses_view.$el.show();
+		  this.showHouseList();
 		  this.activateCurrentTab('.js-manage-houses');
 	  }
 	  else
@@ -168,6 +187,10 @@
 	this.houses_view.$el.show();
   };
   
+  Popup.hideHousesList = function () {
+	    this.houses_view.$el.hide();
+  };
+
   Popup.hideManageHousesView = function () {
 	  this.manage_houses_view.$el.hide();
   };
@@ -190,12 +213,24 @@
 	this.edit_user_view.$el.hide();
   };
   
-  Popup.showEditUserView = function () {
+  Popup.showEditUserView = function (msg) {
 	  this.edit_user_view.model = Bkg.usersession.getLoginUser();
 	  this.edit_user_view.render();
 	  this.edit_user_view.$el.show();
   };
   
+  Popup.hideEditHouseView = function () {
+		this.edit_house_view.$el.hide();
+  };
+	  
+  Popup.showEditHouseView = function (msg) {
+	  
+	  this.edit_house_view.model = msg;
+	  this.edit_house_view.render();
+	  this.edit_house_view.$el.show();
+	  this.edit_house_view.focus();
+  };
+	  
   Popup.showCreateUserView = function () {
 	  this.edit_user_view.model = new Models.User();
 	  this.edit_user_view.render();
@@ -384,6 +419,8 @@
     this.$el.append(this.update_user_avatar.render().$el.hide());
     this.$el.append(this.manage_houses_view.render().$el.hide());
     this.$el.append(this.houses_view.render().$el.hide());
+    this.$el.append(this.edit_house_view.render().$el.hide());
+    
     return this;
   };
   
@@ -406,10 +443,6 @@
     this.notifications_view.$el.hide();
   };
   
-  Popup.hideHousesList = function () {
-	    this.houses_view.$el.hide();
-  };
-
   Popup.showNotifications = function () {
     if(Bkg.DEBUG) console.log("In the beginning of showNotifications");
     this.notifications_view.$el.show();
@@ -716,6 +749,7 @@
 	  this.hideManageHousesView();
 	  this.hideNotifications();
 	  this.hideHousesList();
+	  this.hideEditHouseView();
   };
   
   //not used, its only reference

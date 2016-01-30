@@ -11,106 +11,180 @@ p.empty {
   padding: 10px 20px 10px 50px;
   border-bottom: 1px solid #ddd;
 }
-  .notification a {
+
+.notification a {
     text-decoration: none;
-  }
-  .notification a:hover {
+}
+
+.notification a:hover {
     text-decoration: underline;
-  }
+}
   
-  .notification:last-child {
+.notification:last-child {
     border-bottom: none;
-  }
-  .notification .title {
+}
+
+.notification .title {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 20px;
     display: block;
-  }
-    .notification .title span.name {
-      display: block;
-      text-decoration: none;
-    }
+}
+
+.notification .title span.name {
+    display: block;
+    text-decoration: none;
+}
  
- .notification .created_at {
+.notification .created_at {
      float: right;
      font-size: 11px
- }   
-    /* Following tags are used in new task/conversation form, hence is the reason .notification prefix was not mentioned. */    
-    a.hashtag {
-      text-decoration: none;
-      background: #eee;
-      color:#000000;
-      border-radius: 2px;
-      border: 1px solid #bbb;
-      text-transform: capitalize;
-    }
-    
-    a.noHashtag {
-      text-decoration: none;
-    }
-    
-    a.noHashtag:hover {
-      color:#000000;
-      text-decoration: underline;
-    }
-    
-    a.hashtag:hover {
-      text-decoration: none;
-    }
-    
-    .notification .title .more {
-      margin-top: 3px;
-      margin-bottom: 7px;
-      font-size: 11px;
-      color: #999;
-    }
-    
-  .notification .icon-cancel {
-    position: absolute;
-    top: 15px;
-    right: 10px;
-    padding: 5px;
-    margin: -5px;
-    font-size: 14px;
-    color: #e2e2e2;
-    cursor: pointer;
-  }
+}   
+
+
+
+.house {
+  font-size: 12px;
+  position: relative;
+  min-height: 45px;
+  margin: 0;
+  padding: 10px 20px 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.house a {
+    text-decoration: none;
+}
+
+.house a:hover {
+    text-decoration: underline;
+}
   
-  .notification .icon-cancel:hover {
-    color: black;
-    text-decoration:none;
-  }
-  
-  .notification .updated_at_display {
-    position: absolute;
-    left: 250px;
-    color: #707070;
+.house:last-child {
+    border-bottom: none;
+}
+
+.house .title {
+    margin-bottom: 5px;
+    margin-right: 20px;
+    display: block;
+}
+
+.house .title span.name {
+    text-decoration: none;
+    margin-left: 5px;
+    cursor:pointer;
+}
+
+.house .title span.name:hover {
+    text-decoration: underline;
+}
+ 
+.house .content {
     font-size: 11px;
+    color: #333;
+    margin-left: 22px;
+    /* The code below forces webkit to show only 3 lines */
+    /*
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow-y: hidden;
+    word-wrap: break-word;*/
+  }
+
+.house .controls {
+    margin-left: 22px;
+    margin-top: 5px;
+}
+
+
+.house .controls .created_at {
+     float: right;
+     font-size: 11px;
+}   
+
+.house .icon-home {
+    border: 1px solid #a0a0a0;
+    border-radius: 130px;
   }
   
-  .notification .icon-notitication-type {
-    position: absolute;
-    right: 10px;
-    margin-top: -15px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    font-size: 14px;
-    color: #707070;
+    /* Following tags are used in new task/conversation form, hence is the reason .notification prefix was not mentioned. */    
+a.hashtag {
+   text-decoration: none;
+   background: #eee;
+   color:#000000;
+   border-radius: 2px;
+   border: 1px solid #bbb;
+   text-transform: capitalize;
+}
+    
+a.noHashtag {
+   text-decoration: none;
+}
+    
+a.noHashtag:hover {
+   color:#000000;
+   text-decoration: underline;
   }
+    
+a.hashtag:hover {
+   text-decoration: none;
+}
+    
+.notification .title .more {
+   margin-top: 3px;
+   margin-bottom: 7px;
+   font-size: 11px;
+   color: #999;
+}
+    
+.notification .icon-cancel {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  padding: 5px;
+  margin: -5px;
+  font-size: 14px;
+  color: #e2e2e2;
+  cursor: pointer;
+}
   
-  .notification .icon-cancel:hover {
-    color: black;
-  }
-  .notification div.transition {
-    padding-top: 3px;
-  }
+.notification .icon-cancel:hover {
+ color: black;
+ text-decoration:none;
+}
   
-  .notification span.left {
-    opacity: 0.5;
-  }
+.notification .updated_at_display {
+  position: absolute;
+  left: 250px;
+  color: #707070;
+  font-size: 11px;
+}
   
-  .notification span.label {
+.notification .icon-notitication-type {
+  position: absolute;
+  right: 10px;
+  margin-top: -15px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  font-size: 14px;
+  color: #707070;
+}
+  
+.notification .icon-cancel:hover {
+  color: black;
+}
+
+.notification div.transition {
+  padding-top: 3px;
+}
+  
+.notification span.left {
+  opacity: 0.5;
+}
+  
+.notification span.label {
     background: #c9c9c9;
     border: 1px solid #a0a0a0;
     color: #535353;
@@ -123,11 +197,11 @@ p.empty {
     min-width: 53px;
     text-transform: capitalize;
     font-weight: normal;
-  }
+}
   
-  .notification span.label.left {
-    opacity: 0.5;
-  }
+.notification span.label.left {
+  opacity: 0.5;
+}
   
   .notification span.label.status { 
     border: 1px solid #bbb;

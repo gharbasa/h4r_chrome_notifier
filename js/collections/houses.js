@@ -12,7 +12,7 @@
 		return url + "&user_id=" + Bkg.usersession.getUserId();
 	else
 		return url;
-	console.log("Houses getch Url=" + url);
+	console.log("Houses get Url=" + url);
   };
   
   Houses.initialize = function() {
@@ -21,9 +21,9 @@
   
   //For sorting the collection
   Houses.comparator = function(item) {
-    return item.get(this.sort_key);
+    //return item.get(this.sort_key);
+	  return -1 * new Date(item.get("updated_at")).getTime();
   };
-  
   
   window.Collections = window.Collections || {};
   window.Collections.Houses = Backbone.Collection.extend(Houses);
