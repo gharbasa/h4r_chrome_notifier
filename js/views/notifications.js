@@ -30,10 +30,11 @@
       this.$el.append(Template('no_notifications')());
     }
   };
-
+  
   Notifications.hideNotification = function (m) {
     // Possible memory leak because we aren't deleting the view?
-    this.$("#" + m.get('identifier')).remove();
+	console.log("Remove notification from view.");
+    this.$("#" + m.get('id')).remove();
     this.showPrimerIfEmpty();
   };
 

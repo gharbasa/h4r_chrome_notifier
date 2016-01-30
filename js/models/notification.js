@@ -76,12 +76,22 @@
     }
   };
 
+  Notification.getDisplayDate = function () {
+    var created_at = this.get('created_at'); //GMT date in UTC format
+    var localDate = new Date(created_at);
+    return localDate.toDateString() + " T" + localDate.getHours() +":" + localDate.getMinutes();
+  };
+  
   // Persists read state to the server
   Notification.markAsRead = function () {
     $.post(
         Bkg.settings.apiHost + "/api/2/notifications/mark_as_read?targets[]=" + 
         this.get('identifier')
     );
+  };
+  
+  Notification.inactivateUrl = function () {
+    return this.url() + "/inactivate";
   };
 
   window.Models = window.Models || {};

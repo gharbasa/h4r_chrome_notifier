@@ -25,7 +25,8 @@
     this.$el
       //.attr({ 'id': this.model.get('id') })
       .html(Template('userprofilesettings')({
-        usersession: this.model
+        usersession: this.model,
+        user: this.model.getLoginUser()
       }));
     return this;
   };

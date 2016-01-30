@@ -1,0 +1,23 @@
+.title
+  i.icon-home
+  span.name
+    != model.get("name")
+  
+  - if (model.get("verified") === true)
+    span.house_verified_status
+      = "("
+      i.icon-check
+      =")"
+
+.content
+  != model.get('addr1') + ", " + model.get('addr2') + ", " + model.get('addr3') + ", " + model.get('addr4')
+
+.controls
+  input(type='button', value='Add note', title='Add private/public note.', name='addNoteBtn', id='addNoteBtn')
+  - if (model.get("active") == true)
+    input(type='button', name='inactivateBtn', id='inactivateBtn' , value='Inactivate', title='Make Inactive to hide in search')
+  - else
+    input(type='button', name='activateBtn', id='activateBtn', value='Activate', title='Activate will show-up in search')
+  .created_at
+    != model.getDisplayDate()
+ 

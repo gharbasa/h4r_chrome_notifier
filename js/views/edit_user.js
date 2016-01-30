@@ -56,6 +56,7 @@
   
   EditUser.editUser = function (params) {
 	  console.log("Edit User view. editUser function.");
+	  params.verified = this.$("#verified").is(':checked');
 	  //var user = new Models.User(params);
 	  //user.save(null,
 	  var isCreate = true;
@@ -69,13 +70,13 @@
 		  			var msg = "";
 		  			if(isCreate) {
 		  				msg = "success, creating the user";
-		  				Bkg.users.add(model);
+		  				Bkg.users.add(response);
 		  			}
 		  			else
 		  				msg = "success, updating the user";
 		  			
 		  			console.log(msg);
-		  			this.$('.errors').show().text(msg);
+		  			//this.$('.errors').show().text(msg);
 		  			if(isCreate)
 		  				Bkg.usersession.trigger("view:create_user:success","");
 		  			else

@@ -24,7 +24,7 @@
    * Render EditUser 
    */
   UpdateUserAvatar.render = function () {
-	var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	var loginUser = Bkg.usersession.getLoginUser();
 	//console.log("UpdateUserAvatar.render::this.user= " + this.model.fullName());
     this.$el
       //.attr({ 'id': this.model.get('id') })
@@ -41,7 +41,6 @@
     //e.stopPropagation();
     if(Bkg.DEBUG)
       console.log("EditUser.readUserAvatar");
-    //var loginUser = Bkg.users.getUserByIdentifier(this.model.get("id"));
     var file = $('#user_avatar')[0].files[0];//this.files[0];
     if(file == undefined)
     	return; //do nothing, no file attached.
@@ -65,7 +64,7 @@
   
   UpdateUserAvatar.userAvatarReadyToUpload = function(avatar) {
 	  console.log("userAvatarReadyToUpload::Hey, user avatar base64 content is ready to upload");
-	  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  var loginUser = Bkg.usersession.getLoginUser();
 	  loginUser.set("avatar", avatar);
 	  loginUser.save(avatar,
 			  {

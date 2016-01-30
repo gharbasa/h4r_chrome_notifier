@@ -69,6 +69,8 @@
     var refreshNotificationsWhenFetched = _.after(afterIteration, function () {
       if(Bkg.DEBUG) console.log("Fetching notifications after base collection fetch is successful.");
       Bkg.notifications.fetch();
+      if(Bkg.DEBUG) console.log("Fetching houses.");
+      Bkg.houses.fetch();
     });
     
     chrome.browserAction.setBadgeText({ text: "..." });

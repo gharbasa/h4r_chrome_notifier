@@ -22,6 +22,10 @@
 	  return this.get('id');
   };
   
+  UserSession.isIdExists = function () {
+	  return ((this.get("id") !== undefined) && (this.get("id") !== null));
+  };
+  
   UserSession.csrf = function () {
 	return Bkg.usersession.get('csrf');
   };
@@ -40,6 +44,10 @@
 		        me.trigger("usersession:expired","success");
 		  }
 		});
+  };
+  
+  UserSession.getLoginUser = function () {
+	  return Bkg.users.getUserByIdentifier(this.get("id"));
   };
   
   window.Models = window.Models || {};

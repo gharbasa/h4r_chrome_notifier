@@ -7,19 +7,16 @@
   var watchersSelected = ""; //Selected list of watcher ids comma separated
   var projectId4Watchers = ""; //Current project's people in the watchers list form.
   Popup.events = {
-    'click .js-hover-user': 'toggleUserProfileView',
-    
-    'click .js-new-task':   'toggleNewTask',
-    'click .js-open-tb':    'openCAWM',
-    'click .js-open-tasks': 'openTasks',
-    'click .js-new-conversation': 'toggleNewConversation',
-    'click input[name=notify_done]': 'doneSelectingWatchers',
-    'click div[class=watcher]' : 'flipWatcherCheckbox',
-    'click .js_notify_select_none': 'selectNoneWatchers',
-    'click .js_notify_select_all': 'selectAllWatchers',
-    'click .created_task_conv_link': 'createdLinkClick',
-    'blur #created_task_conv_link_textbox': 'linkTextboxBlur',
-    'click .icon-home-header':   'hideAllAndShowNotifications'
+    //'click .js-new-task':   'toggleNewTask',
+    //'click .js-open-tb':    'openCAWM',
+    //'click .js-open-tasks': 'openTasks',
+    //'click .js-new-conversation': 'toggleNewConversation',
+    //'click input[name=notify_done]': 'doneSelectingWatchers',
+    //'click div[class=watcher]' : 'flipWatcherCheckbox',
+    //'click .js_notify_select_none': 'selectNoneWatchers',
+    //'click .js_notify_select_all': 'selectAllWatchers',
+    //'click .created_task_conv_link': 'createdLinkClick',
+    //'blur #created_task_conv_link_textbox': 'linkTextboxBlur'
   };
   
   //_.extend(Popup, Backbone.Events);
@@ -27,25 +24,35 @@
   Popup.initialize = function () {
     if(Bkg.DEBUG)
       console.log("Popup.initialize Bkg.usersession=" + JSON.stringify(Bkg.usersession));
-    //var currentUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
     this.notifications_view = new Views.Notifications({ collection: Bkg.notifications });
+    this.houses_view = new Views.Houses({ collection: Bkg.houses });
     this.userprofile_view = new Views.Userprofilesettings({model: Bkg.usersession});
     this.edit_user_view = new Views.EditUser({model: Bkg.usersession});
     this.update_user_avatar = new Views.UpdateUserAvatar();
+    this.header_view = new Views.Header();
     this.login_view = new Views.Login();
+    this.manage_houses_view = new Views.ManageHouses();
+    this.edit_house_view = new Views.EditHouse();
+    
     this.userprofile_view.setPopupView(this);
     this.login_view.setPopupView(this);
     this.edit_user_view.setPopupView(this);
     this.update_user_avatar.setPopupView(this);
+    this.header_view.setPopupView(this);
+    this.manage_houses_view.setPopupView(this);
+    this.houses_view.setPopupView(this);
     
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
-    //Bkg.usersession.on('usersession:saved', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
     Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
     Bkg.usersession.on('view:create_user:success', this.userEditedEvent, this);
     Bkg.usersession.on('view:update_user:success', this.userEditedEvent, this);
     Bkg.usersession.on('view:show:update_avatar', this.showUpdateAvatarViewEvent, this);
-    Bkg.usersession.on('view:user_avatar:success', this.udpatedUserAvatarEvent, this);
+    Bkg.usersession.on('view:user_avatar:success', this.updatedUserAvatarEvent, this);
+    Bkg.usersession.on('view:edit_house', this.showEditHouseViewEvent, this);
+    
+    Bkg.usersession.on('view:create_house:success', this.houseEditedEvent, this);
+    Bkg.usersession.on('view:update_house:success', this.houseEditedEvent, this);
     
     //this.new_task_view = new Views.NewTask();
     //this.new_conversation_view = new Views.NewConversation();
@@ -65,23 +72,18 @@
     this.userprofile_view.$el.toggle();
     if (this.userprofile_view.$el.is(':visible')) {
     	console.log("toggleUserProfileView-userprofile is visible, re-render it.");
+    	this.hideEveryThing();
     	this.userprofile_view.render();
-    	this.hideLoginView();
-    	this.hideNotifications();
-    	this.hideEditUserView();
-    	this.hideUpdateAvatarView();
-    	this.activateCurrentTab(Bkg.USER);
-        //this.hideNewConversation();
-        //this.hideWatchersList();
-        //this.initializeTaskView();
+    	this.userprofile_view.$el.show();
+    	this.activateCurrentTab(".js-hover-user");
     }
     else
     {
+    	this.hideEveryThing();
     	console.log("toggleUserProfileView-userprofile is hidden");
     	if (Bkg.usersession.isLoggedIn()) {
     		console.log("User is logged -in, so show notifications");
     		this.showNotifications();
-    		this.hideEditUserView();
     		this.activateCurrentTab("");
     	} else {
     		console.log("User is NOT logged -in, so show login screen.");
@@ -94,11 +96,13 @@
   Popup.userSessionExpiredEvent = function(msg) {
 	  console.log("userSessionExpiredEvent, preparing login screen.");
 	  Bkg.clearCache();
-	  this.$(".user").text(Bkg.usersession.fullName());
+	  //this.$(".user").text(Bkg.usersession.fullName());
+	  this.header_view.render();
 	  //this.hideNotifications();
 	  this.hideUserProfileMenu();
 	  //this.hideEditUserView();
 	  this.showLoginScreen();
+	  this.setFocus();
   };
   
   Popup.showEditUserViewEvent = function(msg) {
@@ -107,7 +111,12 @@
 	  this.showEditUserView();
   };
   
-  //abed
+  Popup.showEditHouseViewEvent = function(msg) {
+	  console.log("Popup.showEditHouseViewEvent");
+	  this.hideEveryThing();
+	  this.showEditHouseView(msg);
+  };
+  
   Popup.showUpdateAvatarViewEvent = function(msg) {
 	  console.log("Popup.showUpdateAvatarViewEvent");
 	  this.hideUserProfileMenu();
@@ -120,28 +129,70 @@
 	  this.showCreateUserView();
   };
   
-  Popup.udpatedUserAvatarEvent = function(msg) {
-	  console.log("udpatedUserAvatarEvent.");
+  Popup.updatedUserAvatarEvent = function(msg) {
+	  console.log("updatedUserAvatarEvent. User avatar is updated.");
 	  this.hideUpdateAvatarView();
-	  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
-	  //loginUser.fetch({});
 	  this.showNotifications();
   };
   
   Popup.userEditedEvent = function(msg) {
-	  console.log("userEditedEvent.");
+	  console.log("userEditedEvent. User data is updated.");
 	  this.hideEditUserView();
+	  this.header_view.render();
 	  if(Bkg.usersession.isLoggedIn()) {
-		  var loginUser = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+		  var loginUser = Bkg.usersession.getLoginUser();
 		  console.log("userEditedEvent. User is logged-in, show notifications screen;" + loginUser.fullName());
-		  this.$(".user").text(loginUser.fullName());
 		  this.showNotifications();
 	  } else {
-		  this.$(".user").text(Bkg.usersession.fullName());
 		  Bkg.clearCache();
 		  this.hideNotifications();
 		  this.showLoginScreen();
 	  }
+  };
+  
+  Popup.houseEditedEvent = function(msg) {
+	  console.log("houseEditedEvent. House data is updated.");
+	  //abed
+	  this.showHouseList();
+	  //this.houses_view.$el.show();
+	  //this.showHouseListView();
+  };
+  
+  Popup.toggleManageHousesView = function (e) {
+	  e.preventDefault();
+	  if(Bkg.DEBUG)
+		  console.log("showManageHousesView");
+	  this.manage_houses_view.$el.toggle();
+	  if (this.manage_houses_view.$el.is(':visible')) {
+		  console.log("showManageHousesView is visible, re-render it.");
+		  this.hideEveryThing();
+		  this.showHouseList();
+		  this.activateCurrentTab('.js-manage-houses');
+	  }
+	  else
+	  {
+		  this.hideEveryThing();
+		  this.showNotifications();
+		  this.activateCurrentTab("");
+	  }
+  };
+  
+  Popup.showRegisterHouseForm = function () {
+	//TODO 
+  };
+  
+  Popup.showHouseList = function () {
+	this.hideEveryThing();
+	this.houses_view.render();
+	this.houses_view.$el.show();
+  };
+  
+  Popup.hideHousesList = function () {
+	    this.houses_view.$el.hide();
+  };
+
+  Popup.hideManageHousesView = function () {
+	  this.manage_houses_view.$el.hide();
   };
   
   Popup.showLoginScreen = function () {
@@ -149,7 +200,7 @@
   };
   
   Popup.showUpdateAvatarView = function () {
-	  this.update_user_avatar.model = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+	  this.update_user_avatar.model = Bkg.usersession.getLoginUser();
 	  this.update_user_avatar.render();
 	  this.update_user_avatar.$el.show();  
   };
@@ -162,12 +213,24 @@
 	this.edit_user_view.$el.hide();
   };
   
-  Popup.showEditUserView = function () {
-	  this.edit_user_view.model = Bkg.users.getUserByIdentifier(Bkg.usersession.get("id"));
+  Popup.showEditUserView = function (msg) {
+	  this.edit_user_view.model = Bkg.usersession.getLoginUser();
 	  this.edit_user_view.render();
 	  this.edit_user_view.$el.show();
   };
   
+  Popup.hideEditHouseView = function () {
+		this.edit_house_view.$el.hide();
+  };
+	  
+  Popup.showEditHouseView = function (msg) {
+	  
+	  this.edit_house_view.model = msg;
+	  this.edit_house_view.render();
+	  this.edit_house_view.$el.show();
+	  this.edit_house_view.focus();
+  };
+	  
   Popup.showCreateUserView = function () {
 	  this.edit_user_view.model = new Models.User();
 	  this.edit_user_view.render();
@@ -188,6 +251,8 @@
     this.$(".new_task").removeClass('currentactivelink');
     this.$(".icon-home-header").removeClass('currentactivelink');
     this.$(".user").removeClass('currentactivelink');
+    this.$(".js-manage-houses").removeClass('currentactivelink');
+    this.$(".js-hover-user").removeClass('currentactivelink');
     
     if(tabName === Bkg.CONV_FORM){
       this.$(".new_conversation").addClass('currentactivelink');
@@ -197,26 +262,12 @@
     }
     else if(tabName === Bkg.USER){
         this.$(".user").addClass('currentactivelink');
+    } else if(tabName === '.js-hover-user') {
+    	this.$(".js-hover-user").addClass('currentactivelink');
+    } else if(tabName === '.js-manage-houses') {
+    	this.$(".js-manage-houses").addClass('currentactivelink');
     } else {
     	this.$(".icon-home-header").addClass('currentactivelink');
-    }
-  };
-  
-  Popup.toggleNewTask = function (e) {
-    if(Bkg.DEBUG)
-      console.log("toggleNewTask:: Toggling taskView");
-    e.preventDefault();
-    this.new_task_view.$el.toggle();        
-    if (this.new_task_view.$el.is(':visible')) {
-      this.hideNotifications();
-      this.hideNewConversation();
-      this.hideWatchersList();
-      this.initializeTaskView();
-    }
-    else
-    {
-      this.showNotifications();
-      this.$(".new_task").removeClass('currentactivelink');
     }
   };
   
@@ -322,7 +373,8 @@
       //console.log("Popup.render::Bkg.selectedContextMenuId=" + Bkg.selectedContextMenuId + 
       //     ", Bkg.fromContextMenu=" + Bkg.fromContextMenu);
     console.log("Popup.render=" + JSON.stringify(Bkg.usersession));
-    this.$el.html(Template('header')());
+    //this.$el.html(Template('header')());
+    this.$el.append(this.header_view.render().$el);
     this.resetInstanceVariables();
     //this.$el.append(this.new_search_view.render().$el);
     //this.$el.append(this.users_view.render().$el.hide()); //Its good to be the 1st one rendered
@@ -365,6 +417,10 @@
     this.$el.append(this.userprofile_view.render().$el.hide());
     this.$el.append(this.edit_user_view.render().$el.hide());
     this.$el.append(this.update_user_avatar.render().$el.hide());
+    this.$el.append(this.manage_houses_view.render().$el.hide());
+    this.$el.append(this.houses_view.render().$el.hide());
+    this.$el.append(this.edit_house_view.render().$el.hide());
+    
     return this;
   };
   
@@ -601,8 +657,20 @@
    * control_name
    *   Name of the control, id attribute (prefixed with # is recommended)
    */
-  Popup.setFocus = function (control_name) {
-    if(Bkg.DEBUG) console.log("In the beginnig of setFocus() method, control_name=" + control_name);
+  Popup.setFocus = function () {
+    if(Bkg.DEBUG) console.log("In the beginnig of setFocus() method");
+    var control_name = "";
+    var timeInterval = 500;// 1 second
+    if (!Bkg.usersession.isLoggedIn()) {
+    	control_name = "#login";
+    }
+    if(control_name != "") {
+    	setTimeout(function() {
+    		this.$(control_name).focus();
+    	}, timeInterval);
+    }
+    
+    /*
     var CONTEXT_LAUNCH_TIME_INTERVAL = 600; //half second, this is bit longer time, its because rendering happens on the fly.
     var GENERAL_TIME_INTERVAL = 150; //Rendering already happened, its just a hide/visible.
     var timeInterval = GENERAL_TIME_INTERVAL;
@@ -624,6 +692,7 @@
     setTimeout(function() {
           this.$(control_name).focus();
     }, timeInterval);
+    */
   };
   
   Popup.createdLinkClick = function (e) {
@@ -664,10 +733,23 @@
   Popup.hideAllAndShowNotifications = function (e) {
     e.preventDefault();
     if(Bkg.DEBUG) console.log("In the beginning of hideAllAndShowNotifications");
-    this.hideUserProfileMenu();
-    this.hideEditUserView();
-    this.hideUpdateAvatarView();
-    this.showNotifications();
+    this.hideEveryThing();
+    if (Bkg.usersession.isLoggedIn()) {
+    	this.showNotifications();
+    } else {
+    	this.showLoginScreen();
+    }
+    this.activateCurrentTab("");
+  };
+  
+  Popup.hideEveryThing = function () {
+	  this.hideUserProfileMenu();
+	  this.hideEditUserView();
+	  this.hideUpdateAvatarView();
+	  this.hideManageHousesView();
+	  this.hideNotifications();
+	  this.hideHousesList();
+	  this.hideEditHouseView();
   };
   
   //not used, its only reference

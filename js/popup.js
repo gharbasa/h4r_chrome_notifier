@@ -72,7 +72,7 @@ $(function () {
   
   if(view != null) {
     if(Bkg.DEBUG) console.log("View is not null, means session exists.");
-    //view.setFocus();
+    view.setFocus();
   }
   //Following 2 variables have to be set to after view.setFocus(); function is called.
   //reset the 2 variables after popup is loaded.   

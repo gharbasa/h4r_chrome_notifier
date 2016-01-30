@@ -42,12 +42,10 @@
    * Sorting will be done in descending order, most recent notification appears 1st
    */
   Notifications.comparator = function(item) {
-    //var comment = item.last_comment();
-    //if(comment) return -1 * getDateObj(comment.updated_at).getTime();
-    //else
-	console.log("Notification item=" + JSON.stringify(item));
 	console.log("Notification item.updated_at=" + item.get("updated_at"));
-    return -1 * getDateObj(item.get("updated_at")).getTime();
+    //return -1 * getDateObj(item.get("updated_at")).getTime();
+	
+	return -1 * new Date(item.get("updated_at")).getTime();
   };
   
   window.Collections = window.Collections || {};
