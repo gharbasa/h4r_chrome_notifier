@@ -7,26 +7,26 @@
   
   var popupView;
   //model here is the User model instance
-  var EditHouse = {
-    className: 'edit_house'
+  var HouseNote = {
+    className: 'house_note'
   };
   
-  EditHouse.events = {
+  HouseNote.events = {
     //'click #new_house_submit' : 'editUserClicked'
-	'submit': 'editHouseClicked'
+	'submit': 'HouseNoteClicked'
   };
   
-  EditHouse.initialize = function () {
-	  //console.log("EditHouse.initialize::this.house= " + JSON.stringify(this.model));  
+  HouseNote.initialize = function () {
+	  //console.log("HouseNote.initialize::this.house= " + JSON.stringify(this.model));  
   };
   
   /**
-   * Render EditHouse 
+   * Render HouseNote 
    */
-  EditHouse.render = function () {
+  HouseNote.render = function () {
 	if(this.model == undefined)
 		this.model = new Models.House();
-	console.log("EditHouse.render::this.house= " + JSON.stringify(this.model));
+	console.log("HouseNote.render::this.house= " + JSON.stringify(this.model));
 	
 	var user = Bkg.usersession.getLoginUser();
 	if(user == undefined)
@@ -42,32 +42,32 @@
     return this;
   };
   
-  EditHouse.focus = function () {
+  HouseNote.focus = function () {
 	 this.$("#name").focus();
   };
   
   /**
    */
-  EditHouse.editHouseClicked = function (e) {
+  HouseNote.HouseNoteClicked = function (e) {
     e.preventDefault();
     //e.stopPropagation();
     if(Bkg.DEBUG)
-      console.log("EditHouse.editHouseClicked");
+      console.log("HouseNote.HouseNoteClicked");
     
+    //var createUser = this.isCreateUser();
     var params = this.$('form').serializeObject();
-    if(params.name == '') {
-    	this.cancel();
-    	return;
-    }
-    this.editHouse(params);
+    
+    //if(createUser) {
+   // 	console.log("Its a create house");
+   // 	this.createUser(params);
+    //} else {
+    	console.log("Its an editing existing house");
+    	this.HouseNote(params);
+    //}
   }; 
   
-  EditHouse.cancel = function () {
-	  Bkg.usersession.trigger("view:create_house:success","");
-  };
-  
-  EditHouse.editHouse = function (params) {
-	  //console.log("Edit House view. editHouse function." + );
+  HouseNote.HouseNote = function (params) {
+	  //console.log("Edit House view. HouseNote function." + );
 	  params.verified = this.$("#verified").is(':checked');
 	  var isCreate = true;
 	  if(this.model.isIdExists()) {
@@ -112,11 +112,11 @@
 	  );
   };
   
-  EditHouse.setPopupView = function(popupViewInstance) {
+  HouseNote.setPopupView = function(popupViewInstance) {
     this.popupView = popupViewInstance;
   };
   
   window.Views = window.Views || {};
-  window.Views.EditHouse = Backbone.View.extend(EditHouse);
+  window.Views.HouseNote = Backbone.View.extend(HouseNote);
 
 }());

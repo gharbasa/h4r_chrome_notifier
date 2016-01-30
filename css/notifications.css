@@ -101,6 +101,14 @@ p.empty {
     margin-top: 5px;
 }
 
+.house .controls input {
+    cursor:pointer;
+}
+
+.house .controls .js-icon-th-list {
+    margin-left: 5px;
+    cursor:pointer;
+}
 
 .house .controls .created_at {
      float: right;
