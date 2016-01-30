@@ -9,7 +9,7 @@ p.empty {
   min-height: 60px;
   margin: 0;
   padding: 10px 20px 10px 50px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #aaaaaa;
 }
 
 .notification a {
@@ -52,7 +52,7 @@ p.empty {
   min-height: 45px;
   margin: 0;
   padding: 10px 20px 10px 15px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #aaaaaa;
 }
 
 .house a {
