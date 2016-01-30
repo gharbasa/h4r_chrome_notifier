@@ -69,8 +69,12 @@ House.editHouseClick = function (e) {
    */
 House.render = function () {
 	//var target = this.model.get('target') || {};
+	var className = "house active";
+	if(!this.model.get("active"))
+		className = "house inactive";
+	
 	this.$el
-      .attr({ 'id': this.model.id })
+      .attr({ 'id': this.model.id, class: className })
       .html(Template('house')({
         model: this.model
       }));
