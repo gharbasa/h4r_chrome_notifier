@@ -21,6 +21,12 @@
   /*float:right;*/
 }
 
+#sub_header_manage_houses #seach_house {
+    margin-left: 70px;
+    margin-top: -2px;
+    width:200px;    
+}
+
 #sub_header_manage_houses .js-add-house {
     cursor:pointer;
     float:right;    

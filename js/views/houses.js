@@ -32,6 +32,10 @@
     return this;
   };
 
+  Houses.focus = function () {
+	  this.$("#seach_house").focus();
+  };
+  
   Houses.showPrimerIfEmpty = function () {
     this.$('.no-houses').remove();
 

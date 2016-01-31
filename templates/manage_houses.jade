@@ -1,11 +1,11 @@
 #sub_header_manage_houses
-  span.js-search-house(title='Search houses')
-    i.icon-search
-  span.js-add-house(title='Register a new house')
-    i.icon-plus
-    
-  span.count-houses
+  span.count-houses(title="No. of houses in the list")
     = "("
     =window.houses_collection_size
     =")"
     
+  input(id='seach_house', title='Enter search keyword')
+  span.js-add-house(title='Register a new house')
+    i.icon-plus
+  
+  

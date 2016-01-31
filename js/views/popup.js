@@ -185,6 +185,7 @@
 	this.hideEveryThing();
 	this.houses_view.render();
 	this.houses_view.$el.show();
+	this.houses_view.focus();
   };
   
   Popup.hideHousesList = function () {
