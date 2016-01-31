@@ -19,8 +19,8 @@
    */
   Houses.render = function () {
     var self = this;
-    this.$el.empty();
     window.houses_collection_size = Bkg.houses.length;
+    this.$el.empty();
     this.$el.html(Template('manage_houses')());
     this.collection.each(function (house) {
       var view = new Views.House({ model: house });

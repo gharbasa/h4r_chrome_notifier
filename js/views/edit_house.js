@@ -80,7 +80,7 @@
 		  		success: function (model, response) {
 		  			var msg = "";
 		  			if(isCreate) {
-		  				msg = "success, creating the house " + JSON.stringify(me.model);
+		  				msg = "success, creating the house " + JSON.stringify(response);
 		  				Bkg.houses.add(response);
 		  			}
 		  			else

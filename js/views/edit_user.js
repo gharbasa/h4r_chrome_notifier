@@ -20,6 +20,11 @@
 	  //console.log("EditUser.initialize::this.user= " + JSON.stringify(this.model));  
   };
   
+  EditUser.focus = function () {
+	  //console.log("EditUser.initialize::this.user= " + JSON.stringify(this.model));
+	  this.$("#fname").focus();
+  };
+  
   /**
    * Render EditUser 
    */

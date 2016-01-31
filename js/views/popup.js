@@ -218,6 +218,7 @@
 	  this.edit_user_view.model = Bkg.usersession.getLoginUser();
 	  this.edit_user_view.render();
 	  this.edit_user_view.$el.show();
+	  this.edit_user_view.focus();
   };
   
   Popup.hideEditHouseView = function () {
@@ -236,6 +237,7 @@
 	  this.edit_user_view.model = new Models.User();
 	  this.edit_user_view.render();
 	  this.edit_user_view.$el.show();
+	  this.edit_user_view.focus();
   };
   
   Popup.hideUserProfileMenu = function () {
