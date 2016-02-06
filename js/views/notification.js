@@ -28,7 +28,7 @@ Notification.updated = function (response) {
 };
 
 Notification.failedUpdating = function () {
-	console.log("Failed updating notification record.");
+	console.log("Failed dismissing notification record.");
 };
 
 //Will buld img tag with the appropriate avatar image.

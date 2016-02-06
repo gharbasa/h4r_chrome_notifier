@@ -12,6 +12,7 @@
    ,'click #addNoteBtn': 'addNoteBtnClick'
    ,'click #inactivateBtn':'inactivateBtnClick'
    ,'click #activateBtn':'activateBtnClick'
+   ,'click .js-icon-th-list':'listNotesClick'
   };
 
   House.initialize = function () {
@@ -50,6 +51,9 @@ House.failedUpdating = function () {
 	  console.log("Failed updating house record.");
 };
 
+House.listNotesClick = function () {
+	Bkg.fetchHouseNotes(this.model.get("id")); //This fires an event and notified in popup.js view
+};
 
 House.activateBtnClick = function (e) {
 	console.log("activateBtnClick");

@@ -19,7 +19,7 @@
    */
   Houses.render = function () {
     var self = this;
-    window.houses_collection_size = Bkg.houses.length;
+    window.houses_collection_size = this.collection.length;
     this.$el.empty();
     this.$el.html(Template('manage_houses')());
     this.collection.each(function (house) {
@@ -46,7 +46,7 @@
 
   Houses.hideHouse = function (m) {
     // Possible memory leak because we aren't deleting the view?
-    this.$("#" + m.get('identifier')).remove();
+    this.$("#" + m.get('id')).remove();
     this.showPrimerIfEmpty();
   };
   

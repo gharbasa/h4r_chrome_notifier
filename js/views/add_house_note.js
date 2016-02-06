@@ -89,9 +89,9 @@
 		  			console.log(msg);
 		  			//this.$('.errors').show().text(msg);
 		  			if(isCreate)
-		  				Bkg.usersession.trigger("view:create_house:success","");
+		  				Bkg.usersession.trigger("view:create_house1:success","");
 		  			else
-		  				Bkg.usersession.trigger("view:update_house:success","");
+		  				Bkg.usersession.trigger("view:update_house1:success","");
 		  		},
 		  		error: function (model, response) {
 		  			if(isCreate) {

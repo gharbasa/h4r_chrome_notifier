@@ -33,6 +33,7 @@
   Bkg.people = new Collections.People();
   Bkg.users = new Collections.Users();
   Bkg.houses = new Collections.Houses();
+  Bkg.housenotes = new Collections.HouseNotes();
   Bkg.task_lists = new Collections.TaskLists();
   /*
   Bkg.houses.on("add", function(house) {

@@ -41,6 +41,30 @@ p.empty {
      font-size: 11px
 }   
 
+.housenote {
+  font-size: 12px;
+  position: relative;
+  min-height: 20px;
+  margin: 0;
+  padding: 10px 20px 10px 15px;
+  border-bottom: 1px solid #aaaaaa;
+}
+
+.housenote .title .dismiss {
+  float: right;
+  color: #e2e2e2;
+  cursor: pointer;
+}
+
+.housenote .title .name {
+    margin-left: 5px;
+}
+
+.housenote .title .dismiss:hover {
+  color: black;
+  text-decoration:none;
+}
+
 .houses_list_form .inactive {
   background-color:#DDDDDD
 }

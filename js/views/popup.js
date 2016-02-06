@@ -42,6 +42,9 @@
     this.manage_houses_view.setPopupView(this);
     this.houses_view.setPopupView(this);
     
+    this.housenotes_view = new Views.HouseNotes({ collection: Bkg.housenotes });
+    this.housenotes_view.setPopupView(this);
+    
     Bkg.usersession.on('usersession:expired', this.userSessionExpiredEvent, this);
     Bkg.usersession.on('view:show:edit_user', this.showEditUserViewEvent, this);
     Bkg.usersession.on('view:show:create_user', this.showCreateUserViewEvent, this);
@@ -53,16 +56,9 @@
     
     Bkg.usersession.on('view:create_house:success', this.houseEditedEvent, this);
     Bkg.usersession.on('view:update_house:success', this.houseEditedEvent, this);
-    
-    //this.new_task_view = new Views.NewTask();
-    //this.new_conversation_view = new Views.NewConversation();
-    //this.users_view = new Views.Users({ collection: Bkg.users });
-    //this.new_search_view = new Views.NewSearch();
-    //Backbone doesn't allow views to be shared. You will need to share a reference to view1 in view2:
-    //this.new_task_view.setPopupView(this);
-    //this.new_conversation_view.setPopupView(this);
-    //this.new_search_view.setPopupView(this);
-    //this.users_view.setPopupView(this);
+
+    Bkg.usersession.on('collection:housenotes:ready', this.renderHouseNotesEvent, this);
+
   };
   
   Popup.toggleUserProfileView = function (e) {
@@ -188,10 +184,25 @@
 	this.houses_view.focus();
   };
   
-  Popup.hideHousesList = function () {
-	    this.houses_view.$el.hide();
+  Popup.renderHouseNotesEvent = function (houseNotesCollection) {
+	  console.debug("Popup.renderHouseNotesEvent=");
+	  this.hideEveryThing();
+	  this.housenotes_view.collection = houseNotesCollection;
+	  this.housenotes_view.render();
+	  this.housenotes_view.$el.show();
+	  this.housenotes_view.focus();
+	  //abed
   };
-
+  
+  Popup.hideHousesList = function () {
+    this.houses_view.$el.hide();
+  };
+  
+  Popup.hideHouseNotesView = function () {
+	 this.housenotes_view.$el.hide();
+  };
+	  
+  
   Popup.hideManageHousesView = function () {
 	  this.manage_houses_view.$el.hide();
   };
@@ -423,7 +434,7 @@
     this.$el.append(this.manage_houses_view.render().$el.hide());
     this.$el.append(this.houses_view.render().$el.hide());
     this.$el.append(this.edit_house_view.render().$el.hide());
-    
+    this.$el.append(this.housenotes_view.render().$el.hide());
     return this;
   };
   
@@ -753,6 +764,7 @@
 	  this.hideNotifications();
 	  this.hideHousesList();
 	  this.hideEditHouseView();
+	  this.hideHouseNotesView();
   };
   
   //not used, its only reference

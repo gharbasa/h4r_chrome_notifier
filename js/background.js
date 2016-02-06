@@ -83,6 +83,20 @@
     //Bkg.task_lists.fetch({ success: refreshNotificationsWhenFetched, error: errorClearCache });
   };
   
+  Bkg.fetchHouseNotes = function (house_id) {
+	  console.log("Bkg.fetchHouseNotes house_id=" + house_id);
+	  var houseNotesFetched = function () {
+		  console.debug("House Notes are fetched successfully.");
+		  Bkg.usersession.trigger("collection:housenotes:ready",Bkg.housenotes);
+	  };
+	  
+	  var errorFetchingHouseNotes = function () {
+		  Bkg.usersession.trigger("error:collection:housenotes","");
+	  };
+	  Bkg.housenotes.house_id = house_id;
+	  Bkg.housenotes.fetch({ success: houseNotesFetched, error: errorFetchingHouseNotes });
+  };
+  
   // Initial data load
   Bkg.refresh();
 
