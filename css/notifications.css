@@ -56,21 +56,22 @@ p.empty {
 .housenote {
   font-size: 12px;
   position: relative;
-  min-height: 25px;
+  min-height: 20px;
   margin: 0;
   padding: 10px 20px 10px 15px;
   border-top: 1px solid #aaaaaa;
 }
 
 .housenote .title .dismiss {
-  float: right;
   color: #e2e2e2;
   cursor: pointer;
 }
 
-.housenote .title .updated_at {
-  float: right;
+.housenote .housenotecontrols {
+    float: right;
+    margin-top:-3px;  
 }
+
 
 .housenote .title .name {
     margin-left: 5px;

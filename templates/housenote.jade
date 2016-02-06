@@ -5,11 +5,15 @@
   span.name
     != model.get("note")
   
-  span.dismiss   
-    i.icon-cancel.js-dismiss(title="Dismiss")
+  br
+  
+  span.housenotecontrols
+    span.updated_at
+      != model.getDisplayDate()
+    span.dismiss   
+      i.icon-cancel.js-dismiss(title="Dismiss")
      
-  span.updated_at
-    != model.getDisplayDate();
+    
     
   
   
