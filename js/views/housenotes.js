@@ -43,7 +43,7 @@
    */
   HouseNotes.render = function () {
     var self = this;
-    //window.housenotes_size = this.collection.length;
+    
     this.$el.empty();
     
     var house = this.collection.getHouseModel();
@@ -55,6 +55,7 @@
     else {
     	houseDetails.name = house.get("name");
     }
+    houseDetails.size = this.collection.length;
     this.$el.html(Template('add_housenote')({model:houseDetails}));
     this.collection.each(function (housenote) {
       var view = new Views.HouseNote({ model: housenote });

@@ -19,7 +19,6 @@
    */
   Houses.render = function () {
     var self = this;
-    window.houses_collection_size = this.collection.length;
     this.$el.empty();
     this.$el.html(Template('manage_houses')());
     this.collection.each(function (house) {
