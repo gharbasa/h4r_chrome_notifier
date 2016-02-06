@@ -1,0 +1,14 @@
+-// Enter note for house
+
+span.housename
+  ="House :" + model.name
+form
+  .errors(style= 'display: none')
+  .field
+    label Note:
+    textarea(id='note', name= 'note', placeholder= "Enter note here", cols="40", rows="2")
+  .field
+    label Private:
+    input(type='checkbox', name='private', id='private')
+  .field.submit
+      input(type= "submit", value= "Add", id="new_housenote_submit")

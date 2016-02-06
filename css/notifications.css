@@ -41,19 +41,35 @@ p.empty {
      font-size: 11px
 }   
 
+.list_housenotes .housename {
+    margin-left:35px;
+    font-weight: bold;
+}
+.list_housenotes .field textarea {
+    height: 30px
+}
+
+.list_housenotes .field {
+    margin: 0px
+}
+
 .housenote {
   font-size: 12px;
   position: relative;
-  min-height: 20px;
+  min-height: 25px;
   margin: 0;
   padding: 10px 20px 10px 15px;
-  border-bottom: 1px solid #aaaaaa;
+  border-top: 1px solid #aaaaaa;
 }
 
 .housenote .title .dismiss {
   float: right;
   color: #e2e2e2;
   cursor: pointer;
+}
+
+.housenote .title .updated_at {
+  float: right;
 }
 
 .housenote .title .name {

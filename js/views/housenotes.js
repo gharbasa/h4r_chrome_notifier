@@ -5,8 +5,37 @@
     className: "list_housenotes"
   };
   
+  HouseNotes.events = {
+	'submit': 'addHouseNoteClicked'
+  };
+  
   HouseNotes.initialize = function () {
     this.collection.on('remove', this.hideHouseNote, this);
+  };
+  
+  HouseNotes.addHouseNoteClicked = function (e) {
+	  e.preventDefault();
+	  var params = this.$('form').serializeObject();
+	  params.private = this.$("#private").is(':checked');
+	  if(params.note == '') {
+	    return;
+	  }
+	  this.addHouseNote(params);
+  };
+  
+  HouseNotes.addHouseNote = function (params) {
+	  $.post(this.collection.url(), params, "json")
+		 .done(this.addedNote.bind(this))
+	    .fail(this.failedAddingNote.bind(this));
+	  
+  };
+  
+  HouseNotes.addedNote = function (response) {
+	Bkg.fetchHouseNotes(this.collection.house_id); //This fires an event and notified in popup.js view  
+  };
+  
+  HouseNotes.failedAddingNote = function (response) {
+	  console.log("Faile to add note to the house");
   };
   
   /**
@@ -14,10 +43,19 @@
    */
   HouseNotes.render = function () {
     var self = this;
-    if(this.collection == null)
-    	return this;
     //window.housenotes_size = this.collection.length;
     this.$el.empty();
+    
+    var house = this.collection.getHouseModel();
+    console.debug("house details=" + JSON.stringify(house));
+    var houseDetails = {};
+    
+    if(house == undefined)
+    	houseDetails.name = "";
+    else {
+    	houseDetails.name = house.get("name");
+    }
+    this.$el.html(Template('add_housenote')({model:houseDetails}));
     this.collection.each(function (housenote) {
       var view = new Views.HouseNote({ model: housenote });
       self.$el.append(view.render().el);
@@ -27,7 +65,7 @@
   };
   
   HouseNotes.focus = function () {
-	  this.$("#seach_house").focus();
+	  this.$("#note").focus();
   };
   
   HouseNotes.showPrimerIfEmpty = function () {
@@ -43,18 +81,7 @@
     this.$("#" + m.get('id')).remove();
     this.showPrimerIfEmpty();
   };
-  
-  HouseNotes.registerHouseClicked = function (e) {
-	  e.preventDefault();
-	  Bkg.usersession.trigger("view:edit_house",null);
-	  console.log("HouseNotes.registerHouseClicked");
-  };
-  
-  HouseNotes.searchHouseNotesClicked = function (e) {
-	  e.preventDefault();
-	  console.log("HouseNotes.searchHouseNotesClicked");
-  };
-  
+    
   HouseNotes.setPopupView = function(popupViewInstance) {
 	    this.popupView = popupViewInstance;
   };

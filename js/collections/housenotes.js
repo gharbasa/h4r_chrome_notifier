@@ -24,6 +24,15 @@
 	  return -1 * new Date(item.get("updated_at")).getTime();
   };
   
+  HouseNotes.getHouseModel = function () {
+	  var self = this;
+	  var house = Bkg.houses.find(function(model) {
+		  if( model.get('id') === self.house_id)
+			  return model;
+	  });
+	  return house;
+  };
+  
   window.Collections = window.Collections || {};
   window.Collections.HouseNotes = Backbone.Collection.extend(HouseNotes);
 
