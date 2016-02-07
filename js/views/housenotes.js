@@ -31,7 +31,7 @@
   };
   
   HouseNotes.addedNote = function (response) {
-	Bkg.fetchHouseNotes(this.collection.house_id); //This fires an event and notified in popup.js view  
+	Bkg.fetchHouseNotes(this.collection.house_id); //This triggers an event and notified in popup.js view  
   };
   
   HouseNotes.failedAddingNote = function (response) {
