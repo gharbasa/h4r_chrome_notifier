@@ -97,6 +97,20 @@
 	  Bkg.housenotes.fetch({ success: houseNotesFetched, error: errorFetchingHouseNotes });
   };
   
+  Bkg.fetchHousePics = function (house_id) {
+	  console.log("Bkg.fetchHousePics house_id=" + house_id);
+	  var housePicsFetched = function () {
+		  console.debug("House Pics are fetched successfully.");
+		  Bkg.usersession.trigger("collection:housepics:ready",Bkg.housenotes);
+	  };
+	  
+	  var errorFetchingHousePics = function () {
+		  Bkg.usersession.trigger("error:collection:housepics","");
+	  };
+	  Bkg.housenotes.house_id = house_id;
+	  Bkg.housenotes.fetch({ success: housePicsFetched, error: errorFetchingHousePics });
+  };
+  
   // Initial data load
   Bkg.refresh();
 

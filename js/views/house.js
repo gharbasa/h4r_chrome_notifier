@@ -5,7 +5,7 @@
   var House = {
     className: 'house'
   };
-
+  
   House.events = {
     'click .js-dismiss' : 'dismissHouse'
    ,'click .name' : 'editHouseClick'
@@ -52,6 +52,7 @@ House.failedUpdating = function () {
 };
 
 House.listNotesClick = function () {
+	console.log("House.listNotesClick houseid:" + this.model.get("id"));
 	Bkg.fetchHouseNotes(this.model.get("id")); //This fires an event and notified in popup.js view
 };
 

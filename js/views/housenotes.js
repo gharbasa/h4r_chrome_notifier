@@ -35,7 +35,7 @@
   };
   
   HouseNotes.failedAddingNote = function (response) {
-	  console.log("Faile to add note to the house");
+	  console.log("Failed to add note to the house");
   };
   
   /**
